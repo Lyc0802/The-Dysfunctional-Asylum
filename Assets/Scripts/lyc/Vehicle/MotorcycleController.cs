@@ -10,6 +10,7 @@ public class MotorcycleController : MonoBehaviour
     [SerializeField] private FirstPersonLocomotor locomotor;
 
     [Header("Speed")]
+    [SerializeField] private float maxThrottleAngle = 90f;
     [SerializeField] private float maxSpeed = 8f;
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 12f;
@@ -40,7 +41,7 @@ public class MotorcycleController : MonoBehaviour
         float dt = Time.deltaTime;
 
         bool isGrabbed =
-            grabbable.SelectingPointsCount > 0;
+            grabbable.SelectingPointsCount > 0 || true;
 
         // Reset handlebar when released
         if (!isGrabbed)
@@ -75,11 +76,12 @@ public class MotorcycleController : MonoBehaviour
             Mathf.DeltaAngle(0f, euler.x);
 
         float throttleAngle =
-            Mathf.DeltaAngle(0f, euler.y);
+            Mathf.DeltaAngle(0f, euler.y);        
+            
 
-        // Y: 0 ~ -90 -> 0 ~ 1
+        // Y: 0 ~ 90 -> 0 ~ 1
         Throttle = Mathf.Clamp01(
-            -throttleAngle / 90f
+            throttleAngle / maxThrottleAngle
         );
 
         // X: -35 ~ 35 -> -1 ~ 1
@@ -112,7 +114,7 @@ public class MotorcycleController : MonoBehaviour
     {
         if (CurrentSpeed <= 0f)
             return;
-
+        Debug.Log(CurrentSpeed);
         float distance = CurrentSpeed * dt;
 
         // Steering affects turning only while moving

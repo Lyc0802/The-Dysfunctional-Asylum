@@ -50,7 +50,7 @@ public class Wheelchair : MonoBehaviour
         // World-space displacement
         Vector3 movement =
             midpointRotation * Vector3.forward * distance;
-
+        // Debug.Log(movement)
         // Apply locomotion
         var locomotionEvent = new LocomotionEvent(
             0,
