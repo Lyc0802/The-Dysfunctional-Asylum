@@ -41,7 +41,7 @@ public class MotorcycleController : MonoBehaviour
         float dt = Time.deltaTime;
 
         bool isGrabbed =
-            grabbable.SelectingPointsCount > 0 || true;
+            grabbable.SelectingPointsCount > 0 ;
 
         // Reset handlebar when released
         if (!isGrabbed)
@@ -81,7 +81,7 @@ public class MotorcycleController : MonoBehaviour
 
         // Y: 0 ~ 90 -> 0 ~ 1
         Throttle = Mathf.Clamp01(
-            throttleAngle / maxThrottleAngle
+            -throttleAngle / maxThrottleAngle
         );
 
         // X: -35 ~ 35 -> -1 ~ 1

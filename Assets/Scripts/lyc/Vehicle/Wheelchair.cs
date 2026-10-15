@@ -13,6 +13,8 @@ public class Wheelchair : MonoBehaviour
     [Header("Wheelchair Settings")]
     [SerializeField] private float wheelSpacing = 0.8f;
     [SerializeField] private float moveMultiplier = 1f;
+    [SerializeField] private float speed = 10f;
+
 
     private void Update()
     {
@@ -24,12 +26,12 @@ public class Wheelchair : MonoBehaviour
 
         // Average distance of both wheels
         float distance =
-            (leftDistance + rightDistance) * 0.5f;
-
+            (leftDistance + rightDistance) * 0.5f * speed;
+        if (Mathf.Abs(distance) > Time.deltaTime * speed / 2f)  distance = 0f;
         // Differential rotation
         float rotation =
-            (leftDistance - rightDistance) / wheelSpacing;
-
+            (rightDistance - leftDistance) / wheelSpacing;
+        if (Mathf.Abs(rotation) > Time.deltaTime * 90f) rotation = 0f;
         // Delta rotation
         Quaternion deltaRotation =
             Quaternion.Euler(
@@ -40,7 +42,7 @@ public class Wheelchair : MonoBehaviour
 
         // Midpoint heading
         Quaternion midpointRotation =
-            transform.rotation *
+            locomotor.transform.rotation *
             Quaternion.Euler(
                 0f,
                 rotation * Mathf.Rad2Deg * 0.5f,

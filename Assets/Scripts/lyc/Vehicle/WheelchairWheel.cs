@@ -42,9 +42,9 @@ public class WheelchairWheel : MonoBehaviour
         );
 
         // Normalize angle to [-180, 180]
-        if (angle > 180f)
-            angle -= 360f;
-
+        if (angle > 180f) angle -= 360f;
+        if (angle < -180f) angle += 360f; 
+        // if (Mathf.Abs(angle) > 10f) return 0f;
         // Get wheel rotation axis
         Vector3 rotationAxis = axis switch
         {
