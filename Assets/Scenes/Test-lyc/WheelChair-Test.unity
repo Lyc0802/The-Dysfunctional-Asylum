@@ -3269,6 +3269,7 @@ GameObject:
   - component: {fileID: 1472744080}
   - component: {fileID: 1472744082}
   - component: {fileID: 1472744081}
+  - component: {fileID: 1472744083}
   m_Layer: 0
   m_Name: ISDK_HandGrabInteraction
   m_TagString: Untagged
@@ -3352,9 +3353,21 @@ MonoBehaviour:
     _ringRequirement: 2
     _pinkyRequirement: 1
     _unselectMode: 0
-  _movementProvider: {fileID: 0}
+  _movementProvider: {fileID: 1472744083}
   _handAligment: 0
   _handGrabPoses: []
+--- !u!114 &1472744083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472744079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953054d108799b942815afb3405983ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.MoveFromTargetProvider
 --- !u!1 &1579215148
 GameObject:
   m_ObjectHideFlags: 0
@@ -4421,6 +4434,7 @@ GameObject:
   - component: {fileID: 1964433139}
   - component: {fileID: 1964433141}
   - component: {fileID: 1964433140}
+  - component: {fileID: 1964433142}
   m_Layer: 0
   m_Name: ISDK_HandGrabInteraction
   m_TagString: Untagged
@@ -4504,9 +4518,21 @@ MonoBehaviour:
     _ringRequirement: 2
     _pinkyRequirement: 1
     _unselectMode: 0
-  _movementProvider: {fileID: 0}
+  _movementProvider: {fileID: 1964433142}
   _handAligment: 0
   _handGrabPoses: []
+--- !u!114 &1964433142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964433138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953054d108799b942815afb3405983ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.MoveFromTargetProvider
 --- !u!1 &1966462660
 GameObject:
   m_ObjectHideFlags: 0
