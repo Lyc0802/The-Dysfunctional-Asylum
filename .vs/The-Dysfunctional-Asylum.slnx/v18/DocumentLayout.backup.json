@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\Documents\\GitHub\\The-Dysfunctional-Asylum\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\user\\documents\\github\\the-dysfunctional-asylum\\assets\\scripts\\lyc\\traps\\rock_fall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lyc\\traps\\rock_fall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\user\\documents\\github\\the-dysfunctional-asylum\\assets\\scripts\\lyc\\traps\\rope_grab.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lyc\\traps\\rope_grab.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "rock_fall.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\The-Dysfunctional-Asylum\\Assets\\Scripts\\lyc\\Traps\\rock_fall.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\lyc\\Traps\\rock_fall.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\The-Dysfunctional-Asylum\\Assets\\Scripts\\lyc\\Traps\\rock_fall.cs",
+              "RelativeToolTip": "Assets\\Scripts\\lyc\\Traps\\rock_fall.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAYwB8AAABwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T13:37:48.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Rope_Grab.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\The-Dysfunctional-Asylum\\Assets\\Scripts\\lyc\\Traps\\Rope_Grab.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\lyc\\Traps\\Rope_Grab.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\The-Dysfunctional-Asylum\\Assets\\Scripts\\lyc\\Traps\\Rope_Grab.cs",
+              "RelativeToolTip": "Assets\\Scripts\\lyc\\Traps\\Rope_Grab.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA2wCYAAACBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T11:08:20.948Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

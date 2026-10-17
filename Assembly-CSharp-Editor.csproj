@@ -1899,6 +1899,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj" />
+    <ProjectReference Include="GDC.Metaverse.Editor.csproj" />
+    <ProjectReference Include="GDC.Metaverse.csproj" />
     <ProjectReference Include="Fusion.Unity.Editor.csproj" />
     <ProjectReference Include="Photon.Realtime.csproj" />
     <ProjectReference Include="Fusion.Unity.csproj" />

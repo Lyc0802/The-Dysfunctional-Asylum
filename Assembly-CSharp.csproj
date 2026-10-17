@@ -50,21 +50,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\lyc\Vehicle\WheelchairWheel.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\NetworkManager.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\SymbolDisableHighlight.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\PlayerSpawner.cs" />
     <Compile Include="Assets\Scripts\lyc\Vehicle\Wheelchair.cs" />
     <Compile Include="Assets\Scripts\lyc\Vehicle\Vehicle.cs" />
     <Compile Include="Assets\Scripts\lyc\Vehicle\MotorcycleController.cs" />
     <Compile Include="Assets\Scripts\lyc\Traps\rock_fall.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\PlayerInfo.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\SymbolKeyboard.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\AxisSlider.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\CapsLockHighlight.cs" />
+    <Compile Include="Assets\Scripts\lyc\Menu\MainMenuPC.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\KeyboardKeyFunc.cs" />
+    <Compile Include="Assets\Scripts\lyc\Traps\generator.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\UICollection.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\RunnerPeerSettings.cs" />
+    <Compile Include="Assets\Scripts\lyc\Traps\Door_slide.cs" />
     <Compile Include="Assets\Scripts\lyc\Traps\Rope_Grab.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\KeyboardValueKey.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\FirstPersonLocomotorNetwork.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\NonNativeKeyboard.cs" />
     <Compile Include="Assets\Scripts\lyc\Traps\Rope_pulling.cs" />
+    <Compile Include="Assets\Scripts\lyc\Network\PlayerInputData.cs" />
+    <Compile Include="Assets\Scripts\lyc\Traps\Flash_light_recharge.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Photon\Fusion\Plugins\NanoSockets\libnanosockets_LICENSE.txt" />
@@ -1884,6 +1894,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="GDC.Metaverse.Editor.csproj" />
+    <ProjectReference Include="GDC.Metaverse.csproj" />
     <ProjectReference Include="Fusion.Unity.Editor.csproj" />
     <ProjectReference Include="Photon.Realtime.csproj" />
     <ProjectReference Include="Fusion.Unity.csproj" />
