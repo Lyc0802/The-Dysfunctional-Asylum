@@ -9,6 +9,7 @@ public class Wheelchair : MonoBehaviour
 
     [Header("Locomotion")]
     [SerializeField] private FirstPersonLocomotor locomotor;
+    [SerializeField] private Rigidbody rb;
 
     [Header("Wheelchair Settings")]
     [SerializeField] private float wheelSpacing = 0.8f;
@@ -18,20 +19,26 @@ public class Wheelchair : MonoBehaviour
 
     private void Update()
     {
-        float leftDistance = leftWheel.GetDeltaDistance();
-        float rightDistance = rightWheel.GetDeltaDistance();
+        // for local run 之後要刪除
+        // local player 
+        locomotor.HandleLocomotionEvent(GetLocomotionEvent(GetWheelDistance()));
+    }
+    
+    // for local run 之後要刪除
+    public LocomotionEvent GetLocomotionEvent(Vector2 WheelDistance)
+    {
+        float leftDistance = WheelDistance.x;
+        float rightDistance = WheelDistance.y;
 
         leftDistance *= moveMultiplier;
         rightDistance *= moveMultiplier;
 
         // Average distance of both wheels
-        float distance =
-            (leftDistance + rightDistance) * 0.5f * speed;
-        if (Mathf.Abs(distance) > Time.deltaTime * speed / 2f)  distance = 0f;
+        float distance = (leftDistance + rightDistance) * 0.5f * speed;
+
         // Differential rotation
-        float rotation =
-            (rightDistance - leftDistance) / wheelSpacing;
-        if (Mathf.Abs(rotation) > Time.deltaTime * 90f) rotation = 0f;
+        float rotation = (rightDistance - leftDistance) / wheelSpacing;
+        
         // Delta rotation
         Quaternion deltaRotation =
             Quaternion.Euler(
@@ -54,13 +61,45 @@ public class Wheelchair : MonoBehaviour
             midpointRotation * Vector3.forward * distance;
         // Debug.Log(movement)
         // Apply locomotion
-        var locomotionEvent = new LocomotionEvent(
+        LocomotionEvent locomotionEvent = new LocomotionEvent(
             0,
             new Pose(movement, deltaRotation),
             LocomotionEvent.TranslationType.Relative,
             LocomotionEvent.RotationType.Relative
         );
+        return locomotionEvent;
+    }
 
-        locomotor.HandleLocomotionEvent(locomotionEvent);
+    public Vector2 GetWheelDistance()
+    {
+        float leftDistance = leftWheel.GetDeltaDistance();
+        float rightDistance = rightWheel.GetDeltaDistance();
+        return new Vector2(leftDistance, rightDistance);
+    }
+
+    public void MoveWheelchair(Vector2 wheelDistance)
+    {
+        float leftDistance = wheelDistance.x * moveMultiplier;
+        float rightDistance = wheelDistance.y * moveMultiplier;
+
+        // Average distance of both wheels
+        float distance = (leftDistance + rightDistance) * 0.5f * speed;
+
+        // Differential rotation
+        float rotation = (rightDistance - leftDistance) / wheelSpacing;
+        float rotationDegrees = rotation * Mathf.Rad2Deg;
+
+        // Delta rotation
+        Quaternion deltaRotation = Quaternion.Euler(0f, rotationDegrees, 0f);
+
+        // Midpoint heading
+        Quaternion midpointRotation = rb.rotation * Quaternion.Euler(0f, rotationDegrees * 0.5f, 0f);
+
+        // World-space displacement
+        Vector3 movement = midpointRotation * Vector3.forward * distance;
+
+        // Apply Rigidbody movement
+        rb.MovePosition(rb.position + movement);
+        rb.MoveRotation(rb.rotation * deltaRotation);
     }
 }

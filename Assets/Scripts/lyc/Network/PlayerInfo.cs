@@ -1,35 +1,84 @@
 using Fusion;
 using UnityEngine;
+using Oculus.Interaction.Locomotion;
+using Bombanana.Interaction;
 
 public class PlayerInfo : NetworkBehaviour
 { 
     [Networked] public string playerName { get; set; }
     [Networked] public DeviceType Device { get; set; }
-
-    public GameObject prefabPC;
-    public GameObject prefabVR;
-
+    
+    private RunnerPeerSettings rps;
     // public Transform playerPC;
     [Header("PC Setting")]
+    public GameObject prefabPC;
     [SerializeField] private float lookSensitivity = 0.15f;
 
 
+    [Header("VR Setting")]
+    public GameObject prefabVR;
+    public GameObject VRRigPrefab;
+    public GameObject VRVehiclePrefab;
+
+    public Transform headAnchor;
+    public Transform leftHandAnchor;
+    public Transform rightHandAnchor;
+    public Wheelchair wheelchair;
+    public MotorcycleController motorcycleController;
+    [Networked] private Vector3 HeadPosition { get; set; }
+    [Networked] private Quaternion HeadRotation { get; set; }
+
+    [Networked] private Vector3 LeftHandPosition { get; set; }
+    [Networked] private Quaternion LeftHandRotation { get; set; }
+
+    [Networked] private Vector3 RightHandPosition { get; set; }
+    [Networked] private Quaternion RightHandRotation { get; set; }
+    [Header("Remote Hand Visuals")]
+    [SerializeField] private CustomHandVisual leftHandVisual;
+    [SerializeField] private CustomHandVisual rightHandVisual;
+
+    [Networked, Capacity(26)] private NetworkArray<uint> LeftBones => default;
+    [Networked, Capacity(26)] private NetworkArray<uint> RightBones => default;
+
+    [Networked] private NetworkBool LeftHandVisible { get; set; }
+    [Networked] private NetworkBool RightHandVisible { get; set; }
+
+    [Networked] private Vector3 LeftOrientPosition { get; set; }
+    [Networked] private Vector3 RightOrientPosition { get; set; }
+
+    [Networked] private Quaternion LeftOrientRotation { get; set; }
+    [Networked] private Quaternion RightOrientRotation { get; set; }
+
+    
     public override void Spawned()
     {
         if (HasInputAuthority) {
             // RPC_SetInitial(NetworkManager.Instance.LocalDeviceType, NetworkManager.Instance.playerName);
-            RunnerPeerSettings RPS = Runner.GetComponent<RunnerPeerSettings>();
-            GameObject cameraObj = new GameObject("PlayerCamera");
-            cameraObj.transform.SetParent(transform, false);
-            cameraObj.transform.localPosition = Vector3.zero;
-            cameraObj.transform.localRotation = Quaternion.identity;
+            rps = Runner.GetComponent<RunnerPeerSettings>();
+            RPC_SetInitial(rps.Device, rps.PlayerName);
+            if (rps.Device == DeviceType.PC )
+            {
+                GameObject cameraObj = new GameObject("PlayerCamera");
+                cameraObj.transform.SetParent(transform, false);
+                cameraObj.transform.localPosition = Vector3.zero;
+                cameraObj.transform.localRotation = Quaternion.identity;
 
-            cameraObj.tag = "MainCamera";
+                cameraObj.tag = "MainCamera";
 
-            Camera playerCamera = cameraObj.AddComponent<Camera>();
-            cameraObj.AddComponent<AudioListener>();
-            RPC_SetInitial(RPS.Device, RPS.PlayerName);
+                Camera playerCamera = cameraObj.AddComponent<Camera>();
+                cameraObj.AddComponent<AudioListener>();
+            }else if (rps.Device == DeviceType.VR)
+            {
+                GameObject vrrig = Instantiate(VRRigPrefab, transform);
+                Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrrig.GetComponent<RigAnchor>());
+            }
+            
             // Set Camera and Link VR Head and other to RunnerPeerSettings
+        }else{
+            if(Device != DeviceType.Unknown)
+            {
+                SpawnModel();
+            }
         }
     }
 
@@ -39,10 +88,23 @@ public class PlayerInfo : NetworkBehaviour
         {
             case DeviceType.PC:
                 Instantiate(prefabPC, transform);
+                Destroy(GetComponent<Wheelchair>());
+                Destroy(GetComponent<MotorcycleController>());
                 break;
             case DeviceType.VR:
-                Instantiate(prefabVR, transform);
-                break;
+                
+                GameObject model = Instantiate(prefabVR, transform);
+                foreach (CustomHandVisual hand in model.GetComponentsInChildren<CustomHandVisual>(true))
+                {
+                    hand.UpdateVisibilityAutomatically = false;
+                    hand.enabled = false;
+
+                    if (hand.Handedness == Oculus.Interaction.Input.Handedness.Left)
+                        leftHandVisual = hand;
+                    else
+                        rightHandVisual = hand;
+                }
+            break;
         }
     }
 
@@ -73,6 +135,7 @@ public class PlayerInfo : NetworkBehaviour
 
             case DeviceType.VR:
                 UpdateVR(input);
+                UpdateHandTracking(input);
                 break;
         }
     }
@@ -90,6 +153,60 @@ public class PlayerInfo : NetworkBehaviour
 
     private void UpdateVR(PlayerInputData input)
     {
-        // 處理 VR Input
+        if (!HasStateAuthority) return;
+
+        HeadPosition = input.headPosition;
+        HeadRotation = input.headRotation;
+
+        LeftHandPosition = input.leftHandPosition;
+        LeftHandRotation = input.leftHandRotation;
+
+        RightHandPosition = input.rightHandPosition;
+        RightHandRotation = input.rightHandRotation;
+
+        if (input.usingMotor)
+        {
+            motorcycleController.MoveMotorcycle(Runner.DeltaTime, input.handlebarLocalRotation);
+        }
+        else
+        {
+            wheelchair.MoveWheelchair(input.wheelDistance);
+        }
     }
+
+    private unsafe void UpdateHandTracking(PlayerInputData input)
+    {
+        if (!HasStateAuthority) return;
+
+        LeftHandVisible = input.leftHandVisible;
+        RightHandVisible = input.rightHandVisible;
+
+        LeftOrientPosition = input.leftOrientPosition;
+        RightOrientPosition = input.rightOrientPosition;
+        LeftOrientRotation = input.leftOrientRotation;
+        RightOrientRotation = input.rightOrientRotation;
+
+        for (int i = 0; i < PlayerInputData.MaxHandBones; i++)
+        {
+            LeftBones.Set(i, input.leftBones[i]);
+            RightBones.Set(i, input.rightBones[i]);
+        }
+    }
+    public override void Render()
+    {
+        if (HasInputAuthority || Device != DeviceType.VR) return;
+
+        // Head
+        headAnchor.SetPositionAndRotation(HeadPosition, HeadRotation);
+
+        // Hands
+        leftHandAnchor.SetPositionAndRotation(LeftHandPosition, LeftHandRotation);
+        rightHandAnchor.SetPositionAndRotation(RightHandPosition, RightHandRotation);
+
+        // Finger Bones
+        HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
+        HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+    }
+
+    public Quaternion GetHeadRotation() {return HeadRotation;}
 }

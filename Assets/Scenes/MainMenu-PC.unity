@@ -345,6 +345,8 @@ MonoBehaviour:
   gameBuildIndex: 3
   playerPrefab: {fileID: 589814293760505198, guid: 0ec766ccf0c1a614fbc0632513e97d77, type: 3}
   deviceType: 1
+  testPlayerCount: 3
+  testClientDeviceType: 1
 --- !u!4 &130748229
 Transform:
   m_ObjectHideFlags: 0

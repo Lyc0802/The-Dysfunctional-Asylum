@@ -2399,6 +2399,7 @@ MonoBehaviour:
   leftWheel: {fileID: 1950701283}
   rightWheel: {fileID: 276449831}
   locomotor: {fileID: 939569929}
+  rb: {fileID: 0}
   wheelSpacing: 0.6
   moveMultiplier: 1
   speed: 10
@@ -3113,6 +3114,7 @@ MonoBehaviour:
   handlebar: {fileID: 52129560}
   grabbable: {fileID: 52129562}
   locomotor: {fileID: 939569929}
+  rb: {fileID: 0}
   maxThrottleAngle: 90
   maxSpeed: 8
   acceleration: 5

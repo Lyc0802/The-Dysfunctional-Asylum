@@ -10,6 +10,10 @@ public class RunnerPeerSettings : MonoBehaviour
     [Header("PC Setting")]
     private Vector2 mouseDelta = Vector2.zero;
 
+    [Header("VR Setting")]
+    private RigAnchor ra;
+
+
     void Update()
     {
         mouseDelta += Mouse.current.delta.ReadValue();;
@@ -18,6 +22,11 @@ public class RunnerPeerSettings : MonoBehaviour
     {
         Device = device;
         PlayerName = playerName;
+    }
+
+    public void SetRigAnchor(RigAnchor ra)
+    {
+        this.ra = ra;
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
@@ -54,6 +63,6 @@ public class RunnerPeerSettings : MonoBehaviour
 
     private void ReadVRInput(ref PlayerInputData data)
     {
-        // TODO: 讀取 VR Controller / Hand Tracking
+        if(ra != null) ra.ReadInput(ref data);
     }
 }

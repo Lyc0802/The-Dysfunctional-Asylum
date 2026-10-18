@@ -8,6 +8,7 @@ public class MotorcycleController : MonoBehaviour
     [SerializeField] private Transform handlebar;
     [SerializeField] private Grabbable grabbable;
     [SerializeField] private FirstPersonLocomotor locomotor;
+    [SerializeField] private Rigidbody rb;
 
     [Header("Speed")]
     [SerializeField] private float maxThrottleAngle = 90f;
@@ -36,10 +37,8 @@ public class MotorcycleController : MonoBehaviour
         _motorcycleRotation = transform.rotation;
     }
 
-    private void LateUpdate()
+    public void UpdateHandlebar(float dt)
     {
-        float dt = Time.deltaTime;
-
         bool isGrabbed =
             grabbable.SelectingPointsCount > 0 ;
 
@@ -64,6 +63,15 @@ public class MotorcycleController : MonoBehaviour
             handlebar.localRotation =
                 _initialRotation * Quaternion.Euler(x, y, 0f);
         }
+    }
+    // for local
+    private void LateUpdate()
+    {
+        float dt = Time.deltaTime;
+
+        UpdateHandlebar(dt);
+
+        // for local run 之後要刪除
 
         // Read local rotation relative to initial pose
         Quaternion relativeRotation =
@@ -92,9 +100,7 @@ public class MotorcycleController : MonoBehaviour
         );
 
         // Update speed
-        float targetSpeed = isGrabbed
-            ? Throttle * maxSpeed
-            : 0f;
+        float targetSpeed = Throttle * maxSpeed;
 
         float speedChange = targetSpeed > CurrentSpeed
             ? acceleration
@@ -114,7 +120,7 @@ public class MotorcycleController : MonoBehaviour
     {
         if (CurrentSpeed <= 0f)
             return;
-        Debug.Log(CurrentSpeed);
+        // Debug.Log(CurrentSpeed);
         float distance = CurrentSpeed * dt;
 
         // Steering affects turning only while moving
@@ -142,4 +148,40 @@ public class MotorcycleController : MonoBehaviour
 
         locomotor.HandleLocomotionEvent(locomotionEvent);
     }
+
+    // for multiplayer
+    public void MoveMotorcycle(float dt, Quaternion handlebarLocalRotation)
+    {
+        // Read rotation relative to initial pose
+        Quaternion relativeRotation = Quaternion.Inverse(_initialRotation) * handlebarLocalRotation;
+        Vector3 euler = relativeRotation.eulerAngles;
+
+        float steeringAngle = Mathf.DeltaAngle(0f, euler.x);
+        float throttleAngle = Mathf.DeltaAngle(0f, euler.y);
+
+        // Calculate throttle and steering
+        Throttle = Mathf.Clamp01(-throttleAngle / maxThrottleAngle);
+        Steering = Mathf.Clamp(steeringAngle / maxSteeringAngle, -1f, 1f);
+
+        // Update speed
+        float targetSpeed = Throttle * maxSpeed;
+        float speedChange = targetSpeed > CurrentSpeed ? acceleration : deceleration;
+        CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, targetSpeed, speedChange * dt);
+
+        if (CurrentSpeed <= 0f) return;
+
+        // Calculate movement
+        float distance = CurrentSpeed * dt;
+        float turnAngle = Steering * maxTurnSpeed * dt;
+
+        Quaternion deltaRotation = Quaternion.Euler(0f, turnAngle, 0f);
+        Quaternion midpointRotation = rb.rotation * Quaternion.Euler(0f, turnAngle * 0.5f, 0f);
+
+        Vector3 movement = midpointRotation * Vector3.forward * distance;
+
+        // Apply Rigidbody movement
+        rb.MovePosition(rb.position + movement);
+        rb.MoveRotation(rb.rotation * deltaRotation);
+    }
+
 }
