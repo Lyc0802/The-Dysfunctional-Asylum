@@ -2900,7 +2900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e3fd2092f98ac46b67563f5781ea76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Vehicle
-  Palm: {fileID: 1723177899}
+  Palm: {fileID: 1822954194}
   panel: {fileID: 1822954195}
   usingMotor: 0
   wheelchair: {fileID: 1004854655}

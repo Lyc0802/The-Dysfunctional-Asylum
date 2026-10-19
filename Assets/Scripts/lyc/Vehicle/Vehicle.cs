@@ -12,7 +12,7 @@ public class Vehicle : MonoBehaviour
 
     void Update()
     {
-        panel.SetActive(Vector3.Angle(Vector3.up, -Palm.up) < 55f );
+        panel.SetActive(Vector3.Angle(Vector3.up, Palm.up) < 55f );
     }
 
     public void ToggleVehicle()
