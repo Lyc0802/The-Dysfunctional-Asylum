@@ -162,8 +162,16 @@ public class MotorcycleController : MonoBehaviour
         // Calculate throttle and steering
         Throttle = Mathf.Clamp01(-throttleAngle / maxThrottleAngle);
         Steering = Mathf.Clamp(steeringAngle / maxSteeringAngle, -1f, 1f);
-        Debug.Log("Motor Throttle: "+Throttle);
-        Debug.Log("Motor Steering: "+Steering);
+        // if (Throttle > 0)
+        // {
+        // Debug.Log("Motor Throttle: "+Throttle);
+            
+        // }
+        // if (Steering > 0)
+        // {
+        //     Debug.Log("Motor Steering: "+Steering);
+
+        // }
 
         // Update speed
         float targetSpeed = Throttle * maxSpeed;
@@ -182,8 +190,8 @@ public class MotorcycleController : MonoBehaviour
         Vector3 movement = midpointRotation * Vector3.forward * distance;
 
         // // Apply Rigidbody movement
-        // rb.MovePosition(rb.position + movement);
-        // rb.MoveRotation(rb.rotation * deltaRotation);
+        rb.MovePosition(rb.position + movement);
+        rb.MoveRotation(rb.rotation * deltaRotation);
     }
 
 }
