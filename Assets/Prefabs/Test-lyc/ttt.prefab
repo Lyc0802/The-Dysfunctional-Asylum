@@ -144,7 +144,7 @@ MonoBehaviour:
   _materialProperties: {fileID: 1268286755958467122}
   _updateRootPose: 1
   _updateRootScale: 0
-  _updateVisibility: 1
+  _updateVisibility: 0
   _joints:
   - id: 0
     bone: {fileID: 0}
@@ -488,7 +488,7 @@ MonoBehaviour:
   _materialProperties: {fileID: 1270764717755459717}
   _updateRootPose: 1
   _updateRootScale: 0
-  _updateVisibility: 1
+  _updateVisibility: 0
   _joints:
   - id: 0
     bone: {fileID: 0}
