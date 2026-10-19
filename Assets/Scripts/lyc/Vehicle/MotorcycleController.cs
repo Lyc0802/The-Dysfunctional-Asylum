@@ -28,7 +28,7 @@ public class MotorcycleController : MonoBehaviour
     public float Throttle { get; private set; }
     public float Steering { get; private set; }
 
-    private Quaternion _initialRotation;
+    private Quaternion _initialRotation = new Quaternion(-0.707107f, 0.707107f, 0f, 0f);
     private Quaternion _motorcycleRotation;
 
     private void Start()
