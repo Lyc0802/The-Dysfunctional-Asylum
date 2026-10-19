@@ -194,7 +194,7 @@ public class PlayerInfo : NetworkBehaviour
     }
     public override void Render()
     {
-        if (HasInputAuthority || Device != DeviceType.VR) return;
+        if (HasInputAuthority) return;
 
         // Head
         headAnchor.SetPositionAndRotation(HeadPosition, HeadRotation);
@@ -204,8 +204,10 @@ public class PlayerInfo : NetworkBehaviour
         rightHandAnchor.SetPositionAndRotation(RightHandPosition, RightHandRotation);
 
         // Finger Bones
-        HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
-        HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        // HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
+        // HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        HandTrackingSync.Apply(leftHandVisual, LeftBones, leftHandAnchor.position, leftHandAnchor.rotation, true);
+        HandTrackingSync.Apply(rightHandVisual, RightBones, rightHandAnchor.position, rightHandAnchor.rotation, true);
     }
 
     public Quaternion GetHeadRotation() {return HeadRotation;}

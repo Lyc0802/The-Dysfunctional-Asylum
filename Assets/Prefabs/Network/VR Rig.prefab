@@ -2048,8 +2048,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigAnchor
   headAnchor: {fileID: 3956279618662790233}
-  leftHaneAnchor: {fileID: 6537822643909067654}
-  rightHaneAnchor: {fileID: 1575191590136684718}
+  leftHaneAnchor: {fileID: 429746712242429834}
+  rightHaneAnchor: {fileID: 6823683098708007442}
   vehicle: {fileID: 9023937675529072354}
   motorHandlebar: {fileID: 6316392489577624263}
   wc: {fileID: 7892049679862419687}
