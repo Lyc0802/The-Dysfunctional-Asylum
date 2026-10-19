@@ -322,7 +322,7 @@ MonoBehaviour:
   rb: {fileID: -6704570317980730687}
   wheelSpacing: 0.8
   moveMultiplier: 1
-  speed: 10
+  speed: 5
 --- !u!114 &-2646353196525242035
 MonoBehaviour:
   m_ObjectHideFlags: 0
