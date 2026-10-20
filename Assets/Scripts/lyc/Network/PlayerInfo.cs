@@ -18,6 +18,8 @@ public class PlayerInfo : NetworkBehaviour
     [Header("VR Setting")]
     public GameObject prefabVR;
     public GameObject VRRigPrefab;
+    public GameObject vrRig;
+
     public GameObject VRVehiclePrefab;
 
     public Transform headAnchor;
@@ -25,6 +27,8 @@ public class PlayerInfo : NetworkBehaviour
     public Transform rightHandAnchor;
     public Wheelchair wheelchair;
     public MotorcycleController motorcycleController;
+    [Networked] private bool isUsingMonitor { get; set; }
+
     [Networked] private Vector3 HeadPosition { get; set; }
     [Networked] private Quaternion HeadRotation { get; set; }
 
@@ -33,6 +37,7 @@ public class PlayerInfo : NetworkBehaviour
 
     [Networked] private Vector3 RightHandPosition { get; set; }
     [Networked] private Quaternion RightHandRotation { get; set; }
+    
     [Header("Remote Hand Visuals")]
     [SerializeField] private CustomHandVisual leftHandVisual;
     [SerializeField] private CustomHandVisual rightHandVisual;
@@ -69,8 +74,8 @@ public class PlayerInfo : NetworkBehaviour
                 cameraObj.AddComponent<AudioListener>();
             }else if (rps.Device == DeviceType.VR)
             {
-                GameObject vrrig = Instantiate(VRRigPrefab, transform);
-                Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrrig.GetComponent<RigAnchor>());
+                vrRig = Instantiate(VRRigPrefab, transform);
+                Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrRig.GetComponent<RigAnchor>());
             }
             
             // Set Camera and Link VR Head and other to RunnerPeerSettings
@@ -121,6 +126,28 @@ public class PlayerInfo : NetworkBehaviour
     private void RPC_SetModel()
     {
         SpawnModel();
+    }
+
+    public void SendMonitor()
+    {
+        if (isUsingMonitor)
+        {
+            MonitorManager.Instance.RPC_SendRelease(this);
+        }
+        else
+        {
+            MonitorManager.Instance.RPC_SendRequest(this);
+        }
+    }
+
+    public void ToggleIsUsingMonitor()
+    {
+        isUsingMonitor = !isUsingMonitor;
+    }
+
+    public void SetIsUsingMonitor(bool b)
+    {
+        isUsingMonitor = b;
     }
 
     public override void FixedUpdateNetwork()

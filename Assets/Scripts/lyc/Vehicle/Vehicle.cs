@@ -21,4 +21,10 @@ public class Vehicle : MonoBehaviour
         wheelchair.gameObject.SetActive(!usingMotor);
         motor.gameObject.SetActive(usingMotor);
     }
+
+    public void GetIntoMonitor()
+    {
+        PlayerInfo playerInfo = transform.parent.GetComponent<PlayerInfo>();
+        playerInfo.SendMonitor();
+    }
 }
