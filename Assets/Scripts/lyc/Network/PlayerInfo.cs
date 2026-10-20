@@ -74,7 +74,8 @@ public class PlayerInfo : NetworkBehaviour
                 cameraObj.AddComponent<AudioListener>();
             }else if (rps.Device == DeviceType.VR)
             {
-                vrRig = Instantiate(VRRigPrefab, transform);
+                vrRig = Instantiate(VRRigPrefab, transform.position - new Vector3(0, 0.6f, 0), transform.rotation);
+                vrRig.GetComponent<VRCameraSeatFollower>().SetSeat(transform);
                 Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrRig.GetComponent<RigAnchor>());
             }
             

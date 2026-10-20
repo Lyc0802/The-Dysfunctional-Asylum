@@ -1843,6 +1843,7 @@ GameObject:
   - component: {fileID: 528238628713484583}
   - component: {fileID: 9023937675529072354}
   - component: {fileID: 3783362594344187999}
+  - component: {fileID: 98157958361538113}
   m_Layer: 0
   m_Name: VR Rig
   m_TagString: Untagged
@@ -2055,6 +2056,21 @@ MonoBehaviour:
   wc: {fileID: 7892049679862419687}
   leftHandVisual: {fileID: 8467454177620805802}
   rightHandVisual: {fileID: 3942246245382874301}
+--- !u!114 &98157958361538113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5416297768405025165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83085e524498dfa48bd89fefe7b16e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRCameraSeatFollower
+  seatPoint: {fileID: 0}
+  positionSmooth: 20
+  rotationSmooth: 20
 --- !u!1 &5768382798698903791
 GameObject:
   m_ObjectHideFlags: 0
