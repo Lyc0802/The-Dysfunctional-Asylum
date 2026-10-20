@@ -27,7 +27,7 @@ public class PlayerInfo : NetworkBehaviour
     public Transform rightHandAnchor;
     public Wheelchair wheelchair;
     public MotorcycleController motorcycleController;
-    [Networked] private bool isUsingMonitor { get; set; }
+    [Networked] public bool isUsingMonitor { get; set; }
 
     [Networked] private Vector3 HeadPosition { get; set; }
     [Networked] private Quaternion HeadRotation { get; set; }
@@ -252,7 +252,7 @@ public class PlayerInfo : NetworkBehaviour
         rightHandAnchor.SetPositionAndRotation(RightHandPosition, RightHandRotation);
 
         // Finger Bones
-        if (isUsingMonitor)
+        if (!isUsingMonitor)
         {
             HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
             HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
