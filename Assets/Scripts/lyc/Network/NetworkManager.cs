@@ -156,7 +156,7 @@ public class NetworkManager : MonoBehaviour
 
         var sceneInfo = new NetworkSceneInfo();
         sceneInfo.AddSceneRef(SceneRef.FromIndex(lobbyBuildIndex), LoadSceneMode.Single);
-
+        sessionName = string.IsNullOrEmpty(sessionName) ? "TestRoom" : sessionName;
         try
         {
             var result = await runner.StartGame(new StartGameArgs
