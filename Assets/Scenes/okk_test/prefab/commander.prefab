@@ -73,7 +73,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 127
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -267,3 +267,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353a9f763dc89e0469dd3d5ce2b349e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  cameraPivot: {fileID: 0}
+  mouseSensitivity: 0.1
+  maxHeadYaw: 100
+  minPitch: -60
+  maxPitch: 60
+  forwardSpeed: 2.5
+  backwardSpeed: 1.2
+  turnSpeed: 90
+  gravity: -20
