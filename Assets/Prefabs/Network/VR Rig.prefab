@@ -2036,6 +2036,7 @@ MonoBehaviour:
   usingMotor: 0
   wheelchair: {fileID: 7892049679862419687}
   motor: {fileID: 3223720981191706979}
+  playerInfo: {fileID: 0}
 --- !u!114 &3783362594344187999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2071,6 +2072,7 @@ MonoBehaviour:
   seatPoint: {fileID: 0}
   positionSmooth: 20
   rotationSmooth: 20
+  isUsingMonitor: 0
 --- !u!1 &5768382798698903791
 GameObject:
   m_ObjectHideFlags: 0
@@ -4077,7 +4079,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: change vehicle
+  m_text: Get into monitor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

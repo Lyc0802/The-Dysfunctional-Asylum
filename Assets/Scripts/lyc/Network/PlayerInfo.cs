@@ -252,8 +252,12 @@ public class PlayerInfo : NetworkBehaviour
         rightHandAnchor.SetPositionAndRotation(RightHandPosition, RightHandRotation);
 
         // Finger Bones
-        HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
-        HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        if (isUsingMonitor)
+        {
+            HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
+            HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        }
+        
         // HandTrackingSync.Apply(leftHandVisual, LeftBones, leftHandAnchor.position, leftHandAnchor.rotation, true);
         // HandTrackingSync.Apply(rightHandVisual, RightBones, rightHandAnchor.position, rightHandAnchor.rotation, true);
     }
