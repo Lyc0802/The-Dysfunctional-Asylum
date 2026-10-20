@@ -96,8 +96,8 @@ public static unsafe class HandTrackingSync
         Transform orient = hand.OrientationRoot;
         if (orient == null) return;
 
-        Vector3 pos = hand.Root.InverseTransformPoint(orient.position);
-        Quaternion rot = Quaternion.Inverse(hand.Root.rotation) * orient.rotation;
+        Vector3 pos = orient.position;
+        Quaternion rot = orient.rotation;
 
         if (isLeft)
         {
@@ -121,12 +121,9 @@ public static unsafe class HandTrackingSync
 
         Transform orient = hand.OrientationRoot;
 
-        if (orient != null && orient != hand.Root && orientRotation != default)
+        if (orient != null && orientRotation != default)
         {
-            orient.SetPositionAndRotation(
-                hand.Root.TransformPoint(orientPosition),
-                hand.Root.rotation * orientRotation
-            );
+            orient.SetPositionAndRotation(orientPosition, orientRotation);
         }
 
         var joints = hand.Joints;

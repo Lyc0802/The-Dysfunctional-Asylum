@@ -28,7 +28,7 @@ public class MotorcycleController : MonoBehaviour
     public float Throttle { get; private set; }
     public float Steering { get; private set; }
 
-    private Quaternion _initialRotation;
+    private Quaternion _initialRotation = new Quaternion(0.707107f, 0.707107f, 0f, 0f);
     private Quaternion _motorcycleRotation;
 
     private void Start()
@@ -162,6 +162,16 @@ public class MotorcycleController : MonoBehaviour
         // Calculate throttle and steering
         Throttle = Mathf.Clamp01(-throttleAngle / maxThrottleAngle);
         Steering = Mathf.Clamp(steeringAngle / maxSteeringAngle, -1f, 1f);
+        // if (Throttle > 0)
+        // {
+        // Debug.Log("Motor Throttle: "+Throttle);
+            
+        // }
+        // if (Steering > 0)
+        // {
+        //     Debug.Log("Motor Steering: "+Steering);
+
+        // }
 
         // Update speed
         float targetSpeed = Throttle * maxSpeed;
@@ -179,7 +189,7 @@ public class MotorcycleController : MonoBehaviour
 
         Vector3 movement = midpointRotation * Vector3.forward * distance;
 
-        // Apply Rigidbody movement
+        // // Apply Rigidbody movement
         rb.MovePosition(rb.position + movement);
         rb.MoveRotation(rb.rotation * deltaRotation);
     }

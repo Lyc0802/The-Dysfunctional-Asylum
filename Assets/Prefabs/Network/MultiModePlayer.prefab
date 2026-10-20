@@ -301,7 +301,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 1.2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7816371721059583508
@@ -322,7 +322,7 @@ MonoBehaviour:
   rb: {fileID: -6704570317980730687}
   wheelSpacing: 0.8
   moveMultiplier: 1
-  speed: 10
+  speed: 5
 --- !u!114 &-2646353196525242035
 MonoBehaviour:
   m_ObjectHideFlags: 0
