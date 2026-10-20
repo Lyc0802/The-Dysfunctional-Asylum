@@ -149,7 +149,7 @@ public class PlayerInfo : NetworkBehaviour
 
     public void SendMonitor()
     {
-        Debug.Log("Monitor: is Send");
+        // Debug.Log("Monitor: is Send");
 
         if (isUsingMonitor)
         {
@@ -164,11 +164,18 @@ public class PlayerInfo : NetworkBehaviour
     public void ToggleIsUsingMonitor()
     {
         isUsingMonitor = !isUsingMonitor;
+        ChangeVisibilityOfVehicle();
     }
 
     public void SetIsUsingMonitor(bool b)
     {
         isUsingMonitor = b;
+        ChangeVisibilityOfVehicle();
+    }
+
+    public void ChangeVisibilityOfVehicle()
+    {
+        vrRig.GetComponent<Vehicle>().ToggleVisibility(!isUsingMonitor);
     }
 
     public override void FixedUpdateNetwork()
@@ -211,7 +218,7 @@ public class PlayerInfo : NetworkBehaviour
 
         RightHandPosition = input.rightHandPosition;
         RightHandRotation = input.rightHandRotation;
-
+        if (isUsingMonitor) return;
         if (input.usingMotor)
         {
             motorcycleController.MoveMotorcycle(Runner.DeltaTime, input.handlebarLocalRotation);
@@ -254,6 +261,7 @@ public class PlayerInfo : NetworkBehaviour
         // Finger Bones
         if (!isUsingMonitor)
         {
+            // model update !!!
             HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
             HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
         }

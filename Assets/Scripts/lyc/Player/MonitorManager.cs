@@ -34,7 +34,7 @@ public class MonitorManager : NetworkBehaviour
     {
 
         bool isApproved = currentUser == null;
-        Debug.Log("Monitor: is Request " + isApproved);
+        // Debug.Log("Monitor: is Request " + isApproved);
 
         if (isApproved) currentUser = player;
         

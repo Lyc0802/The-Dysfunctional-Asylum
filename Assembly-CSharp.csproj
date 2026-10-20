@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\lyc\Network\HandTrackingSync.cs" />
     <Compile Include="Assets\Scripts\lyc\Vehicle\Vehicle.cs" />
     <Compile Include="Assets\Scripts\lyc\Vehicle\MotorcycleController.cs" />
+    <Compile Include="Assets\Scripts\lyc\Player\TransformTunneling.cs" />
     <Compile Include="Assets\Scripts\lyc\Traps\rock_fall.cs" />
     <Compile Include="Assets\Scripts\lyc\Network\PlayerInfo.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\SymbolKeyboard.cs" />
