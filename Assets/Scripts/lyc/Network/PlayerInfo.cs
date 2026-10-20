@@ -74,11 +74,12 @@ public class PlayerInfo : NetworkBehaviour
                 cameraObj.AddComponent<AudioListener>();
             }else if (rps.Device == DeviceType.VR)
             {
-                // vrRig = Instantiate(VRRigPrefab, transform.position - new Vector3(0, 0.6f, 0), transform.rotation);
-                vrRig = Instantiate(VRRigPrefab, transform);
+                vrRig = Instantiate(VRRigPrefab, transform.position - new Vector3(0, 0.6f, 0), transform.rotation);
+                // vrRig = Instantiate(VRRigPrefab, transform);
 
                 vrRig.GetComponent<VRCameraSeatFollower>().SetSeat(transform);
                 Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrRig.GetComponent<RigAnchor>());
+                vrRig.GetComponent<Vehicle>().playerInfo = this;
             }
             
             // Set Camera and Link VR Head and other to RunnerPeerSettings
@@ -95,14 +96,21 @@ public class PlayerInfo : NetworkBehaviour
         switch (Device)
         {
             case DeviceType.PC:
-                Instantiate(prefabPC, transform);
+                GameObject modelPC = Instantiate(prefabPC, transform);
                 Destroy(GetComponent<Wheelchair>());
                 Destroy(GetComponent<MotorcycleController>());
+                if (HasInputAuthority)
+                {
+                    foreach (Renderer renderer in modelPC.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = false;
+                    }
+                }
                 break;
             case DeviceType.VR:
                 
-                GameObject model = Instantiate(prefabVR, transform);
-                foreach (CustomHandVisual hand in model.GetComponentsInChildren<CustomHandVisual>(true))
+                GameObject modelVR = Instantiate(prefabVR, transform);
+                foreach (CustomHandVisual hand in modelVR.GetComponentsInChildren<CustomHandVisual>(true))
                 {
                     hand.UpdateVisibilityAutomatically = false;
                     hand.enabled = false;
@@ -111,6 +119,14 @@ public class PlayerInfo : NetworkBehaviour
                         leftHandVisual = hand;
                     else
                         rightHandVisual = hand;
+                }
+
+                if (HasInputAuthority)
+                {
+                    foreach (Renderer renderer in modelVR.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = false;
+                    }
                 }
             break;
         }
@@ -133,6 +149,8 @@ public class PlayerInfo : NetworkBehaviour
 
     public void SendMonitor()
     {
+        Debug.Log("Monitor: is Send");
+
         if (isUsingMonitor)
         {
             MonitorManager.Instance.RPC_SendRelease(this);

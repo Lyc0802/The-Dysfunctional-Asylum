@@ -32,7 +32,9 @@ public class MonitorManager : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendRequest(PlayerInfo player)
     {
+
         bool isApproved = currentUser == null;
+        Debug.Log("Monitor: is Request " + isApproved);
 
         if (isApproved) currentUser = player;
         
@@ -70,6 +72,7 @@ public class MonitorManager : NetworkBehaviour
                     Vector3 v = monitors[currentMonitor].transform.position;
                     v.y  -= 1.2f; 
                     player.vrRig.transform.position = v;
+                    player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = true;
                 }
 
             }
@@ -78,6 +81,8 @@ public class MonitorManager : NetworkBehaviour
                 if(player != null && player.Object.HasInputAuthority)
                 {
                     player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
+                    player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = false;
+
                     RPC_Release();
                 }
             }

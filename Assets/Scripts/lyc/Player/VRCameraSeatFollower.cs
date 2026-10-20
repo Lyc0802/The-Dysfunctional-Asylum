@@ -6,10 +6,11 @@ public class VRCameraSeatFollower : MonoBehaviour
     [SerializeField] private Transform seatPoint;
     [SerializeField] private float positionSmooth = 20f;
     [SerializeField] private float rotationSmooth = 20f;
+    public bool isUsingMonitor = false;
 
     private void LateUpdate()
     {
-        if (seatPoint == null) return;
+        if (seatPoint == null || isUsingMonitor) return;
 
         float t = 1f - Mathf.Exp(-positionSmooth * Time.deltaTime);
         float r = 1f - Mathf.Exp(-rotationSmooth * Time.deltaTime);

@@ -39,6 +39,18 @@ namespace GDC.Metaverse
         }
 
         /// <summary>Host: removes what this runner's spawners created.</summary>
+        public static void DespawnSceneFor(NetworkRunner runner, int sceneBuildIndex)
+        {
+            if (runner == null || !runner.IsServer) return;
+
+            foreach (var spawner in _spawners.ToArray())
+            {
+                if (spawner == null || spawner._spawnedBy != runner) continue;
+                if (spawner.gameObject.scene.buildIndex != sceneBuildIndex) continue;
+
+                spawner.Despawn(runner);
+            }
+        }
         public static void DespawnFor(NetworkRunner runner)
         {
             if (runner == null || !runner.IsServer) return;

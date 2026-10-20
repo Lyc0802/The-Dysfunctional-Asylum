@@ -8,6 +8,7 @@ public class Vehicle : MonoBehaviour
     public bool usingMotor = false;
     public Wheelchair wheelchair;
     public MotorcycleController motor;
+    public PlayerInfo playerInfo;
 
 
     void Update()
@@ -24,7 +25,8 @@ public class Vehicle : MonoBehaviour
 
     public void GetIntoMonitor()
     {
-        PlayerInfo playerInfo = transform.parent.GetComponent<PlayerInfo>();
+        // PlayerInfo playerInfo = transform.parent.GetComponent<PlayerInfo>();
+        Debug.Log("Monitor: is Press");
         playerInfo.SendMonitor();
     }
 }
