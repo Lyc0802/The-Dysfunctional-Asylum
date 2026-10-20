@@ -99,7 +99,10 @@ public class Wheelchair : MonoBehaviour
         Vector3 movement = midpointRotation * Vector3.forward * distance;
 
         // Apply Rigidbody movement
-        rb.MovePosition(rb.position + movement);
-        rb.MoveRotation(rb.rotation * deltaRotation);
+        transform.position += movement;
+        transform.rotation *= deltaRotation;
+
+        // rb.MovePosition(rb.position + movement);
+        // rb.MoveRotation(rb.rotation * deltaRotation);
     }
 }
