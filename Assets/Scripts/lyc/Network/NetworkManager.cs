@@ -146,6 +146,8 @@ public class NetworkManager : MonoBehaviour
         // events.OnInput.AddListener(settings.OnInput);
         var callbacks = new NetworkDelegates();
         callbacks.OnInput = settings.OnInput;
+        callbacks.OnSceneLoadDone = OnSceneLoadDone;
+
         runner.AddCallbacks(callbacks);
         // 讓 Multi-Peer 可以控制 Runner 的顯示
         go.AddComponent<RunnerEnableVisibility>();
@@ -156,7 +158,7 @@ public class NetworkManager : MonoBehaviour
 
         var sceneInfo = new NetworkSceneInfo();
         sceneInfo.AddSceneRef(SceneRef.FromIndex(lobbyBuildIndex), LoadSceneMode.Single);
-
+        sessionName = string.IsNullOrEmpty(sessionName) ? "TestRoom" : sessionName;
         try
         {
             var result = await runner.StartGame(new StartGameArgs
@@ -199,10 +201,12 @@ public class NetworkManager : MonoBehaviour
     }
 
     // 返回 Lobby：因為 Lobby 本來就還在，直接卸載 Game
-    public void LoadLobbyScene()
+   public void LoadLobbyScene()
     {
         if (Runner == null || !Runner.IsRunning || !Runner.IsSceneAuthority) return;
         if (!isGameSceneLoaded) return;
+
+        GDC.Metaverse.NetworkSpawner.DespawnSceneFor(Runner, gameBuildIndex);
 
         Runner.UnloadScene(SceneRef.FromIndex(gameBuildIndex));
         isGameSceneLoaded = false;
@@ -235,6 +239,15 @@ public class NetworkManager : MonoBehaviour
         isGameSceneLoaded = false;
         Debug.Log("All local peers left session.");
     }
+
+    private void OnSceneLoadDone(NetworkRunner runner)
+    {
+        if (!runner.IsServer) return;
+
+        GDC.Metaverse.NetworkSpawner.SpawnFor(runner);
+    }
+
+    
 
     public void SetSessionName(string newName) => sessionName = newName;
     public void SetPlayerName(string newName) => playerName = newName;

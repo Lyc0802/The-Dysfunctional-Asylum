@@ -18,6 +18,8 @@ public class PlayerInfo : NetworkBehaviour
     [Header("VR Setting")]
     public GameObject prefabVR;
     public GameObject VRRigPrefab;
+    public GameObject vrRig;
+
     public GameObject VRVehiclePrefab;
 
     public Transform headAnchor;
@@ -25,6 +27,8 @@ public class PlayerInfo : NetworkBehaviour
     public Transform rightHandAnchor;
     public Wheelchair wheelchair;
     public MotorcycleController motorcycleController;
+    [Networked] public bool isUsingMonitor { get; set; }
+
     [Networked] private Vector3 HeadPosition { get; set; }
     [Networked] private Quaternion HeadRotation { get; set; }
 
@@ -33,6 +37,7 @@ public class PlayerInfo : NetworkBehaviour
 
     [Networked] private Vector3 RightHandPosition { get; set; }
     [Networked] private Quaternion RightHandRotation { get; set; }
+    
     [Header("Remote Hand Visuals")]
     [SerializeField] private CustomHandVisual leftHandVisual;
     [SerializeField] private CustomHandVisual rightHandVisual;
@@ -69,8 +74,12 @@ public class PlayerInfo : NetworkBehaviour
                 cameraObj.AddComponent<AudioListener>();
             }else if (rps.Device == DeviceType.VR)
             {
-                GameObject vrrig = Instantiate(VRRigPrefab, transform);
-                Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrrig.GetComponent<RigAnchor>());
+                vrRig = Instantiate(VRRigPrefab, transform.position - new Vector3(0, 0.6f, 0), transform.rotation);
+                // vrRig = Instantiate(VRRigPrefab, transform);
+
+                vrRig.GetComponent<VRCameraSeatFollower>().SetSeat(transform);
+                Runner.GetComponent<RunnerPeerSettings>().SetRigAnchor(vrRig.GetComponent<RigAnchor>());
+                vrRig.GetComponent<Vehicle>().playerInfo = this;
             }
             
             // Set Camera and Link VR Head and other to RunnerPeerSettings
@@ -87,14 +96,21 @@ public class PlayerInfo : NetworkBehaviour
         switch (Device)
         {
             case DeviceType.PC:
-                Instantiate(prefabPC, transform);
+                GameObject modelPC = Instantiate(prefabPC, transform);
                 Destroy(GetComponent<Wheelchair>());
                 Destroy(GetComponent<MotorcycleController>());
+                if (HasInputAuthority)
+                {
+                    foreach (Renderer renderer in modelPC.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = false;
+                    }
+                }
                 break;
             case DeviceType.VR:
                 
-                GameObject model = Instantiate(prefabVR, transform);
-                foreach (CustomHandVisual hand in model.GetComponentsInChildren<CustomHandVisual>(true))
+                GameObject modelVR = Instantiate(prefabVR, transform);
+                foreach (CustomHandVisual hand in modelVR.GetComponentsInChildren<CustomHandVisual>(true))
                 {
                     hand.UpdateVisibilityAutomatically = false;
                     hand.enabled = false;
@@ -103,6 +119,14 @@ public class PlayerInfo : NetworkBehaviour
                         leftHandVisual = hand;
                     else
                         rightHandVisual = hand;
+                }
+
+                if (HasInputAuthority)
+                {
+                    foreach (Renderer renderer in modelVR.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.enabled = false;
+                    }
                 }
             break;
         }
@@ -121,6 +145,37 @@ public class PlayerInfo : NetworkBehaviour
     private void RPC_SetModel()
     {
         SpawnModel();
+    }
+
+    public void SendMonitor()
+    {
+        // Debug.Log("Monitor: is Send");
+
+        if (isUsingMonitor)
+        {
+            MonitorManager.Instance.RPC_SendRelease(this);
+        }
+        else
+        {
+            MonitorManager.Instance.RPC_SendRequest(this);
+        }
+    }
+
+    public void ToggleIsUsingMonitor()
+    {
+        isUsingMonitor = !isUsingMonitor;
+        ChangeVisibilityOfVehicle();
+    }
+
+    public void SetIsUsingMonitor(bool b)
+    {
+        isUsingMonitor = b;
+        ChangeVisibilityOfVehicle();
+    }
+
+    public void ChangeVisibilityOfVehicle()
+    {
+        vrRig.GetComponent<Vehicle>().ToggleVisibility(!isUsingMonitor);
     }
 
     public override void FixedUpdateNetwork()
@@ -163,7 +218,7 @@ public class PlayerInfo : NetworkBehaviour
 
         RightHandPosition = input.rightHandPosition;
         RightHandRotation = input.rightHandRotation;
-
+        if (isUsingMonitor) return;
         if (input.usingMotor)
         {
             motorcycleController.MoveMotorcycle(Runner.DeltaTime, input.handlebarLocalRotation);
@@ -204,8 +259,13 @@ public class PlayerInfo : NetworkBehaviour
         rightHandAnchor.SetPositionAndRotation(RightHandPosition, RightHandRotation);
 
         // Finger Bones
-        HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
-        HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        if (!isUsingMonitor)
+        {
+            // model update !!!
+            HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
+            HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
+        }
+        
         // HandTrackingSync.Apply(leftHandVisual, LeftBones, leftHandAnchor.position, leftHandAnchor.rotation, true);
         // HandTrackingSync.Apply(rightHandVisual, RightBones, rightHandAnchor.position, rightHandAnchor.rotation, true);
     }
