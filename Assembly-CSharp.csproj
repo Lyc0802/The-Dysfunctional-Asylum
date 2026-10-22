@@ -79,10 +79,13 @@
     <Compile Include="Assets\Scripts\Map\WallGenerator.cs" />
     <Compile Include="Assets\Scripts\lyc\Player\VRModel.cs" />
     <Compile Include="Assets\Scripts\lyc\Player\TransformTunneling.cs" />
+    <Compile Include="Assets\Scripts\Map\DoorCutter.cs" />
+    <Compile Include="Assets\Scripts\Map\WallFloorFitTool.cs" />
     <Compile Include="Assets\Scripts\lyc\Traps\rock_fall.cs" />
     <Compile Include="Assets\Scripts\lyc\Network\PlayerInfo.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\SymbolKeyboard.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Map\WallThicknessTool.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\AxisSlider.cs" />
     <Compile Include="Assets\MRTK-Keyboard-main\MRTK\SDK\Experimental\NonNativeKeyboard\Scripts\CapsLockHighlight.cs" />
     <Compile Include="Assets\Scripts\lyc\Menu\MainMenuPC.cs" />
