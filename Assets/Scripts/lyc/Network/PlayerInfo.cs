@@ -34,8 +34,6 @@ public class PlayerInfo : NetworkBehaviour
     [Networked] private Quaternion HandlebarRotation { get; set; }
     [Networked] private NetworkBool UsingMotor { get; set; }
 
-    [SerializeField] private float wheelRadius = 0.6f;
-
     [Networked] private Vector3 HeadPosition { get; set; }
     [Networked] private Quaternion HeadRotation { get; set; }
 
@@ -238,7 +236,9 @@ public class PlayerInfo : NetworkBehaviour
         }
         else
         {
-            WheelAngles += input.wheelDistance / wheelRadius * Mathf.Rad2Deg;
+            VRModel wheelSettings = vrModel != null ? vrModel : prefabVR.GetComponent<VRModel>();
+
+            WheelAngles += wheelSettings.DistanceToAngles(input.wheelDistance);
             wheelchair.MoveWheelchair(input.wheelDistance);
         }
     }
