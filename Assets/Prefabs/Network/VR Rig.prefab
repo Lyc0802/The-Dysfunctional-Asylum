@@ -79,7 +79,7 @@ Transform:
   m_GameObject: {fileID: 962387444460649940}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0.505, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: 9bff6314-6226-43dc-b44a-eca4a48a1b6a
+  instanceId: 47d33f0a-4715-4a7a-83ee-94df8434e6df
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -2294,6 +2294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Vehicle
   Palm: {fileID: 227420168083270418}
   panel: {fileID: 8247994660284533692}
+  isVisible: 1
   usingMotor: 0
   wheelchair: {fileID: 7892049679862419687}
   motor: {fileID: 3223720981191706979}
@@ -3308,7 +3309,7 @@ Transform:
   m_GameObject: {fileID: 6326028682910868495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0.505, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5016,7 +5017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: 81f55626-5fad-45e9-a1df-184f330da7ba
-  instanceId: 037c6bc4-8b19-4aa5-a3a3-84d6a9c8e24a
+  instanceId: 6c97ab40-c67a-4654-b538-25e092eca208
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 2063f481-1b63-4eda-9ee8-a00df98536bc

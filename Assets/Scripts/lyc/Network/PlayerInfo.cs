@@ -6,9 +6,10 @@ using Bombanana.Interaction;
 public class PlayerInfo : NetworkBehaviour
 { 
     [Networked] public string playerName { get; set; }
-    [Networked] public DeviceType Device { get; set; }
+    [Networked, OnChangedRender(nameof(OnDeviceChanged))] public DeviceType Device { get; set; }
     
     private RunnerPeerSettings rps;
+    private bool _modelSpawned;
     // public Transform playerPC;
     [Header("PC Setting")]
     public GameObject prefabPC;
@@ -20,14 +21,18 @@ public class PlayerInfo : NetworkBehaviour
     public GameObject VRRigPrefab;
     public GameObject vrRig;
 
-    public GameObject VRVehiclePrefab;
+    public VRModel vrModel;
 
     public Transform headAnchor;
     public Transform leftHandAnchor;
     public Transform rightHandAnchor;
     public Wheelchair wheelchair;
     public MotorcycleController motorcycleController;
-    [Networked] public bool isUsingMonitor { get; set; }
+    [Networked] private bool isUsingMonitor { get; set; }
+
+    [Networked] private Vector2 WheelAngles { get; set; }
+    [Networked] private Quaternion HandlebarRotation { get; set; }
+    [Networked] private NetworkBool UsingMotor { get; set; }
 
     [Networked] private Vector3 HeadPosition { get; set; }
     [Networked] private Quaternion HeadRotation { get; set; }
@@ -53,6 +58,8 @@ public class PlayerInfo : NetworkBehaviour
 
     [Networked] private Quaternion LeftOrientRotation { get; set; }
     [Networked] private Quaternion RightOrientRotation { get; set; }
+
+    
 
     
     public override void Spawned()
@@ -83,16 +90,22 @@ public class PlayerInfo : NetworkBehaviour
             }
             
             // Set Camera and Link VR Head and other to RunnerPeerSettings
-        }else{
-            if(Device != DeviceType.Unknown)
-            {
-                SpawnModel();
-            }
         }
+
+        SpawnModel();
+    }
+
+    private void OnDeviceChanged()
+    {
+        SpawnModel();
     }
 
     void SpawnModel()
     {
+        if (_modelSpawned || Device == DeviceType.Unknown) return;
+
+        _modelSpawned = true;
+
         switch (Device)
         {
             case DeviceType.PC:
@@ -110,6 +123,7 @@ public class PlayerInfo : NetworkBehaviour
             case DeviceType.VR:
                 
                 GameObject modelVR = Instantiate(prefabVR, transform);
+                vrModel=modelVR.GetComponent<VRModel>();
                 foreach (CustomHandVisual hand in modelVR.GetComponentsInChildren<CustomHandVisual>(true))
                 {
                     hand.UpdateVisibilityAutomatically = false;
@@ -138,13 +152,6 @@ public class PlayerInfo : NetworkBehaviour
         Device = device;
         this.playerName = playerName;
         Debug.Log($"Player {playerName} [{Object.InputAuthority}]: {Device}");
-        RPC_SetModel();
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_SetModel()
-    {
-        SpawnModel();
     }
 
     public void SendMonitor()
@@ -219,12 +226,19 @@ public class PlayerInfo : NetworkBehaviour
         RightHandPosition = input.rightHandPosition;
         RightHandRotation = input.rightHandRotation;
         if (isUsingMonitor) return;
+
+        UsingMotor = input.usingMotor;
+
         if (input.usingMotor)
         {
+            HandlebarRotation = input.handlebarLocalRotation;
             motorcycleController.MoveMotorcycle(Runner.DeltaTime, input.handlebarLocalRotation);
         }
         else
         {
+            VRModel wheelSettings = vrModel != null ? vrModel : prefabVR.GetComponent<VRModel>();
+
+            WheelAngles += wheelSettings.DistanceToAngles(input.wheelDistance);
             wheelchair.MoveWheelchair(input.wheelDistance);
         }
     }
@@ -262,9 +276,23 @@ public class PlayerInfo : NetworkBehaviour
         if (!isUsingMonitor)
         {
             // model update !!!
+
+            // vrModel.UpdateWheelchair(input.wheelDistance);
+            // vrModel.UpdateMotor(input.handlebarLocalRotation);
+            if (vrModel != null)
+            {
+                vrModel.SetModel(UsingMotor);
+
+                if (UsingMotor)
+                    vrModel.UpdateMotor(HandlebarRotation);
+                else
+                    vrModel.UpdateWheelchair(WheelAngles);
+            }
+
             HandTrackingSync.Apply(leftHandVisual, LeftBones, LeftOrientPosition, LeftOrientRotation, LeftHandVisible);
             HandTrackingSync.Apply(rightHandVisual, RightBones, RightOrientPosition, RightOrientRotation, RightHandVisible);
         }
+       
         
         // HandTrackingSync.Apply(leftHandVisual, LeftBones, leftHandAnchor.position, leftHandAnchor.rotation, true);
         // HandTrackingSync.Apply(rightHandVisual, RightBones, rightHandAnchor.position, rightHandAnchor.rotation, true);

@@ -182,7 +182,7 @@ MonoBehaviour:
   _Device: 0
   prefabPC: {fileID: 2865860596055117538, guid: 3b2245db90d911042832ec2d8317156f, type: 3}
   lookSensitivity: 0.15
-  prefabVR: {fileID: 2865860596055117538, guid: f03e18b6cf1e7154198abd40f755514e, type: 3}
+  prefabVR: {fileID: 4285688294624625951, guid: 84e145bf5001629419ecdeea4b8e2768, type: 3}
   VRRigPrefab: {fileID: 5416297768405025165, guid: 2ee0b4e58fd6fc64898845c5f1a702c6, type: 3}
   vrRig: {fileID: 0}
   VRVehiclePrefab: {fileID: 0}
@@ -191,6 +191,7 @@ MonoBehaviour:
   rightHandAnchor: {fileID: 3557182546415751787}
   wheelchair: {fileID: -7816371721059583508}
   motorcycleController: {fileID: -2646353196525242035}
+  _isUsingMonitor: 0
   leftHandVisual: {fileID: 0}
   rightHandVisual: {fileID: 0}
 --- !u!114 &589814293760505198

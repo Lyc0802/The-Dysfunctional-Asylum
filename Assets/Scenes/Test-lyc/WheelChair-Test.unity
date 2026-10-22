@@ -2878,7 +2878,7 @@ Transform:
   m_GameObject: {fileID: 1213110766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2902,9 +2902,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Vehicle
   Palm: {fileID: 1822954194}
   panel: {fileID: 1822954195}
+  isVisible: 1
   usingMotor: 0
   wheelchair: {fileID: 1004854655}
   motor: {fileID: 1316038374}
+  playerInfo: {fileID: 0}
 --- !u!1 &1217970934
 GameObject:
   m_ObjectHideFlags: 0
