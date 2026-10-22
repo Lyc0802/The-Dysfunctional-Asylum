@@ -13,6 +13,7 @@ public class PlayerInfo : NetworkBehaviour
     // public Transform playerPC;
     [Header("PC Setting")]
     public GameObject prefabPC;
+    public Commander commander;
     [SerializeField] private float lookSensitivity = 0.15f;
 
 
@@ -79,6 +80,10 @@ public class PlayerInfo : NetworkBehaviour
 
                 Camera playerCamera = cameraObj.AddComponent<Camera>();
                 cameraObj.AddComponent<AudioListener>();
+                if (commander!=null)
+                {
+                    commander.cameraPivot = cameraObj.transform;
+                }
             }else if (rps.Device == DeviceType.VR)
             {
                 vrRig = Instantiate(VRRigPrefab, transform.position - new Vector3(0, 0.6f, 0), transform.rotation);
@@ -204,13 +209,18 @@ public class PlayerInfo : NetworkBehaviour
 
     private void UpdatePC(PlayerInputData input)
     {
-        transform.Rotate(Vector3.up, input.Look.x * lookSensitivity);
+        // transform.Rotate(Vector3.up, input.Look.x * lookSensitivity);
 
-        Vector2 move = input.Move;
-        Vector3 dir = move.y * transform.forward + move.x * transform.right;
-        dir.y = 0f;
-        dir.Normalize();
-        transform.position += dir * 5f * Runner.DeltaTime;
+        // Vector2 move = input.Move;
+        // Vector3 dir = move.y * transform.forward + move.x * transform.right;
+        // dir.y = 0f;
+        // dir.Normalize();
+        // transform.position += dir * 5f * Runner.DeltaTime;
+        if (commander != null)
+        {
+            commander.Drive(input.Move, Runner.DeltaTime);
+            commander.Look(input.Look);
+        }
     }
 
     private void UpdateVR(PlayerInputData input)

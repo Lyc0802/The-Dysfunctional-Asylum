@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: -6854447533534280332}
   - component: {fileID: -7816371721059583508}
   - component: {fileID: -2646353196525242035}
+  - component: {fileID: -4593345138282915084}
   m_Layer: 0
   m_Name: MultiModePlayer
   m_TagString: Untagged
@@ -181,17 +182,17 @@ MonoBehaviour:
   _playerName: 
   _Device: 0
   prefabPC: {fileID: 2865860596055117538, guid: 3b2245db90d911042832ec2d8317156f, type: 3}
+  commander: {fileID: -4593345138282915084}
   lookSensitivity: 0.15
   prefabVR: {fileID: 4285688294624625951, guid: 84e145bf5001629419ecdeea4b8e2768, type: 3}
   VRRigPrefab: {fileID: 5416297768405025165, guid: 2ee0b4e58fd6fc64898845c5f1a702c6, type: 3}
   vrRig: {fileID: 0}
-  VRVehiclePrefab: {fileID: 0}
+  vrModel: {fileID: 0}
   headAnchor: {fileID: 4811368043242518286}
   leftHandAnchor: {fileID: 9051338793483551383}
   rightHandAnchor: {fileID: 3557182546415751787}
   wheelchair: {fileID: -7816371721059583508}
   motorcycleController: {fileID: -2646353196525242035}
-  _isUsingMonitor: 0
   leftHandVisual: {fileID: 0}
   rightHandVisual: {fileID: 0}
 --- !u!114 &589814293760505198
@@ -349,3 +350,23 @@ MonoBehaviour:
   maxTurnSpeed: 90
   resetSpeed: 180
   resetSteering: 1
+--- !u!114 &-4593345138282915084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353a9f763dc89e0469dd3d5ce2b349e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Commander
+  cameraPivot: {fileID: 0}
+  mouseSensitivity: 0.1
+  maxHeadYaw: 100
+  minPitch: -60
+  maxPitch: 60
+  forwardSpeed: 2.5
+  backwardSpeed: 1.2
+  turnSpeed: 90

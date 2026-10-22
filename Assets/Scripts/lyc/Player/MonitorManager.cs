@@ -98,6 +98,12 @@ public class MonitorManager : NetworkBehaviour
         this.currentMonitor = currentMonitor;
     }
 
+    public bool isUsed()
+    {
+        return MonitorManager.Instance.currentUser != null;
+
+    }
+
     // Update is called once per frame
     public override void Render()
     {
