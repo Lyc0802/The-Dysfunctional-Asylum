@@ -34,7 +34,7 @@ public class MonitorManager : NetworkBehaviour
     {
 
         bool isApproved = currentUser == null;
-        // Debug.Log("Monitor: is Request " + isApproved);
+        Debug.Log("Monitor: is Request " + isApproved);
 
         if (isApproved) currentUser = player;
         
@@ -45,6 +45,8 @@ public class MonitorManager : NetworkBehaviour
     public void RPC_SendRelease(PlayerInfo player)
     {
         bool isApproved = currentUser == player;
+        Debug.Log("Monitor: is Request " + isApproved);
+
 
         // player.SetIsUsingMonitor(false);
     

@@ -29,7 +29,7 @@ public class PlayerInfo : NetworkBehaviour
     public Transform rightHandAnchor;
     public Wheelchair wheelchair;
     public MotorcycleController motorcycleController;
-    [Networked] private bool isUsingMonitor { get; set; }
+    [Networked] public bool isUsingMonitor { get; set; }
 
     [Networked] private Vector2 WheelAngles { get; set; }
     [Networked] private Quaternion HandlebarRotation { get; set; }
@@ -115,8 +115,8 @@ public class PlayerInfo : NetworkBehaviour
         {
             case DeviceType.PC:
                 GameObject modelPC = Instantiate(prefabPC, transform);
-                Destroy(GetComponent<Wheelchair>());
-                Destroy(GetComponent<MotorcycleController>());
+                // Destroy(GetComponent<Wheelchair>());
+                // Destroy(GetComponent<MotorcycleController>());
                 if (HasInputAuthority)
                 {
                     foreach (Renderer renderer in modelPC.GetComponentsInChildren<Renderer>(true))
