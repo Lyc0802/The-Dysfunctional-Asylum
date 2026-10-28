@@ -550,7 +550,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2936889640575674030}
   - component: {fileID: 8074167256255634760}
-  - component: {fileID: -5381758182646580039}
+  - component: {fileID: 848667209752618245}
   m_Layer: 0
   m_Name: MonitorManager
   m_TagString: Untagged
@@ -600,7 +600,7 @@ MonoBehaviour:
   - {fileID: 2532304647720256370}
   _currentMonitor: 0
   _currentUser: {fileID: 0}
---- !u!114 &-5381758182646580039
+--- !u!114 &848667209752618245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
-  SortKey: 2027983432
+  SortKey: 1159003999
   SendPriority: 1
   EnableInterpolation: 1
   Flags: 262146
