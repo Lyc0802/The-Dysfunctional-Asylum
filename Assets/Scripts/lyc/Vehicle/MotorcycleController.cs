@@ -150,50 +150,35 @@ public class MotorcycleController : MonoBehaviour
     }
 
     // for multiplayer
+    
     public void MoveMotorcycle(float dt, Quaternion handlebarLocalRotation)
     {
-        // Read rotation relative to initial pose
         Quaternion relativeRotation = Quaternion.Inverse(_initialRotation) * handlebarLocalRotation;
         Vector3 euler = relativeRotation.eulerAngles;
 
         float steeringAngle = Mathf.DeltaAngle(0f, euler.x);
         float throttleAngle = Mathf.DeltaAngle(0f, euler.y);
 
-        // Calculate throttle and steering
         Throttle = Mathf.Clamp01(-throttleAngle / maxThrottleAngle);
         Steering = Mathf.Clamp(steeringAngle / maxSteeringAngle, -1f, 1f);
-        // if (Throttle > 0)
-        // {
-        // Debug.Log("Motor Throttle: "+Throttle);
-            
-        // }
-        // if (Steering > 0)
-        // {
-        //     Debug.Log("Motor Steering: "+Steering);
 
-        // }
-
-        // Update speed
         float targetSpeed = Throttle * maxSpeed;
         float speedChange = targetSpeed > CurrentSpeed ? acceleration : deceleration;
         CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, targetSpeed, speedChange * dt);
 
         if (CurrentSpeed <= 0f) return;
 
-        // Calculate movement
         float distance = CurrentSpeed * dt;
         float turnAngle = Steering * maxTurnSpeed * dt;
 
+        Quaternion currentRotation = transform.rotation;
         Quaternion deltaRotation = Quaternion.Euler(0f, turnAngle, 0f);
-        Quaternion midpointRotation = rb.rotation * Quaternion.Euler(0f, turnAngle * 0.5f, 0f);
+        Quaternion midpointRotation = currentRotation * Quaternion.Euler(0f, turnAngle * 0.5f, 0f);
 
         Vector3 movement = midpointRotation * Vector3.forward * distance;
 
-        // // Apply Rigidbody movement
-        // rb.MovePosition(rb.position + movement);
-        // rb.MoveRotation(rb.rotation * deltaRotation);
-        transform.position += movement;
-        transform.rotation *= deltaRotation;
+        transform.SetPositionAndRotation(transform.position + movement, currentRotation * deltaRotation);
     }
+
 
 }

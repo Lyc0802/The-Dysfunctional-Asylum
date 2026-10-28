@@ -49,10 +49,10 @@ public class VRModel : MonoBehaviour
             ref _rightVelocity, wheelSmoothTime);
 
         leftWheel.localRotation = _leftInitialRotation *
-            Quaternion.AngleAxis(_leftCurrentAngle, Vector3.forward);
+            Quaternion.AngleAxis(_leftCurrentAngle, Vector3.up);
 
         rightWheel.localRotation = _rightInitialRotation *
-            Quaternion.AngleAxis(_rightCurrentAngle, Vector3.forward);
+            Quaternion.AngleAxis(_rightCurrentAngle, Vector3.up);
 
         float t = 1f - Mathf.Exp(-handlebarSmoothSpeed * dt);
 
