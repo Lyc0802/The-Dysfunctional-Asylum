@@ -83,6 +83,7 @@ public class MonitorManager : NetworkBehaviour
                     player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
                     player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = false;
                     player.SetIsUsingMonitor(false);
+                    Debug.Log("Monitor: back");
                     // RPC_Release();
                 }
             }
