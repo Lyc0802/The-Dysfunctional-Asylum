@@ -310,37 +310,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1967849068428838913, guid: 967ff0d4c2417274ca1c1aada68aef96, type: 3}
   m_PrefabInstance: {fileID: 504357382}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1572153933
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1572153934}
-  m_Layer: 0
-  m_Name: monitorPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1572153934
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1572153933}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2002159975
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GDC.Metaverse::GDC.Metaverse.NetworkSpawner
   groups:
-  - prefab: {fileID: 848667209752618245, guid: 04c640796dc14c142ae1cf2f34245a33, type: 3}
+  - prefab: {fileID: -5381758182646580039, guid: 04c640796dc14c142ae1cf2f34245a33, type: 3}
     points:
     - {fileID: 221153921}
 --- !u!4 &2002159977
@@ -523,5 +492,4 @@ SceneRoots:
   - {fileID: 2051331645}
   - {fileID: 2002159977}
   - {fileID: 83153326}
-  - {fileID: 1572153934}
   - {fileID: 504357382}
