@@ -39,7 +39,6 @@ public class MonitorManager : NetworkBehaviour
         if (isApproved) currentUser = player;
         
         RPC_SendRespond(player.Object.InputAuthority, isApproved, true, currentUser);
-        player.SetIsUsingMonitor(true);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -47,17 +46,17 @@ public class MonitorManager : NetworkBehaviour
     {
         bool isApproved = currentUser == player;
 
-        player.SetIsUsingMonitor(false);
+        // player.SetIsUsingMonitor(false);
     
         RPC_SendRespond(player.Object.InputAuthority, isApproved, false, currentUser);
         if (isApproved) currentUser = null;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_Release()
-    {
-        currentUser = null;
-    }
+    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    // public void RPC_Release()
+    // {
+    //     currentUser = null;
+    // }
 
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -73,6 +72,7 @@ public class MonitorManager : NetworkBehaviour
                     v.y  -= 1.2f; 
                     player.vrRig.transform.position = v;
                     player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = true;
+                    player.SetIsUsingMonitor(true);
                 }
 
             }
@@ -82,8 +82,8 @@ public class MonitorManager : NetworkBehaviour
                 {
                     player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
                     player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = false;
-
-                    RPC_Release();
+                    player.SetIsUsingMonitor(false);
+                    // RPC_Release();
                 }
             }
         }

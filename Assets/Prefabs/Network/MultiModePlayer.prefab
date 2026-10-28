@@ -342,7 +342,7 @@ MonoBehaviour:
   grabbable: {fileID: 0}
   locomotor: {fileID: 0}
   rb: {fileID: -6704570317980730687}
-  maxThrottleAngle: 90
+  maxThrottleAngle: 45
   maxSpeed: 8
   acceleration: 5
   deceleration: 12
