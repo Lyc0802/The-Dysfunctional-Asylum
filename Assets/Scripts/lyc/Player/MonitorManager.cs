@@ -102,6 +102,14 @@ public class MonitorManager : NetworkBehaviour
         this.currentMonitor = currentMonitor;
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_AddCurrentMonitor(int amount, PlayerInfo player)
+    {
+        if (currentUser != player) return;
+        currentMonitor += amount + monitors.Length;
+        currentMonitor %= monitors.Length;
+    }
+
     public bool isUsed()
     {
         return MonitorManager.Instance.currentUser != null;

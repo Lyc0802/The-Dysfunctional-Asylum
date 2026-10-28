@@ -173,6 +173,11 @@ public class PlayerInfo : NetworkBehaviour
         }
     }
 
+    public void AddMonitor(int amount)
+    {
+        MonitorManager.Instance.RPC_AddCurrentMonitor(amount, this);
+    }
+
     public void SetIsUsingMonitor(bool b)
     {
         ChangeVisibilityOfVehicle(b);

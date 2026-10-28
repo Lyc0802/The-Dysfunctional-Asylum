@@ -37,4 +37,11 @@ public class Vehicle : MonoBehaviour
         // Debug.Log("Monitor: is Press;。。
         playerInfo.SendMonitor();
     }
+
+    public void AddMonitor(int amount)
+    {
+        // PlayerInfo playerInfo = transform.parent.GetComponent<PlayerInfo>();
+        // Debug.Log("Monitor: is Press;。。
+        playerInfo.AddMonitor(amount);
+    }
 }
