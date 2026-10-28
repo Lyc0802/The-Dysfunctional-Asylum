@@ -37,7 +37,7 @@ public class MonitorManager : NetworkBehaviour
         Debug.Log("Monitor: is Request " + isApproved);
 
         if (isApproved) currentUser = player;
-        PlayerInfo.isUsingMonitor = true;
+        player.isUsingMonitor = true;
         RPC_SendRespond(player.Object.InputAuthority, isApproved, true, currentUser);
     }
 
@@ -49,7 +49,7 @@ public class MonitorManager : NetworkBehaviour
 
 
         // player.SetIsUsingMonitor(false);
-        PlayerInfo.isUsingMonitor = false;
+        player.isUsingMonitor = false;
     
         RPC_SendRespond(player.Object.InputAuthority, isApproved, false, currentUser);
         if (isApproved) currentUser = null;
