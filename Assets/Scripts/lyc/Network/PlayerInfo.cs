@@ -173,21 +173,14 @@ public class PlayerInfo : NetworkBehaviour
         }
     }
 
-    public void ToggleIsUsingMonitor()
-    {
-        isUsingMonitor = !isUsingMonitor;
-        ChangeVisibilityOfVehicle();
-    }
-
     public void SetIsUsingMonitor(bool b)
     {
-        isUsingMonitor = b;
-        ChangeVisibilityOfVehicle();
+        ChangeVisibilityOfVehicle(b);
     }
 
-    public void ChangeVisibilityOfVehicle()
+    public void ChangeVisibilityOfVehicle(bool b)
     {
-        vrRig.GetComponent<Vehicle>().ToggleVisibility(!isUsingMonitor);
+        vrRig.GetComponent<Vehicle>().ToggleVisibility(!b);
     }
 
     public override void FixedUpdateNetwork()
