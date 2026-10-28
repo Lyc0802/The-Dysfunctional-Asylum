@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GDC.Metaverse::GDC.Metaverse.NetworkSpawner
   groups:
-  - prefab: {fileID: 1858387447288990257, guid: 04c640796dc14c142ae1cf2f34245a33, type: 3}
+  - prefab: {fileID: 263458432361210031, guid: 04c640796dc14c142ae1cf2f34245a33, type: 3}
     points:
     - {fileID: 221153921}
 --- !u!4 &2002159977
