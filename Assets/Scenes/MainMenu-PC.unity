@@ -341,7 +341,7 @@ MonoBehaviour:
   sessionName: 
   playerName: 
   maxPlayers: 8
-  lobbyBuildIndex: 2
+  lobbyBuildIndex: 1
   gameBuildIndex: 3
   playerPrefab: {fileID: 589814293760505198, guid: 0ec766ccf0c1a614fbc0632513e97d77, type: 3}
   deviceType: 1
