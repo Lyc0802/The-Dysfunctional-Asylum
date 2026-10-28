@@ -636,6 +636,10 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@d8c07649098d\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SingularityGroup.HotReload.EditorDependencies">
+      <HintPath>Packages\com.singularitygroup.hotreload\Editor\SingularityGroup.HotReload.EditorDependencies.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@4628d2ba6ea4\Lib\Editor\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>

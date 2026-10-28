@@ -646,6 +646,10 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@d8c07649098d\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SingularityGroup.HotReload.EditorDependencies">
+      <HintPath>Packages\com.singularitygroup.hotreload\Editor\SingularityGroup.HotReload.EditorDependencies.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@4628d2ba6ea4\Lib\Editor\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
@@ -1919,6 +1923,10 @@
     <ProjectReference Include="GDC.Metaverse.Editor.csproj">
       <Project>{0BD8A2A3-908D-6C93-786E-47AD0D39BF46}</Project>
       <Name>GDC.Metaverse.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SingularityGroup.HotReload.Runtime.Public.csproj">
+      <Project>{6CA2FD5E-366A-5011-F089-4402BAEFD834}</Project>
+      <Name>SingularityGroup.HotReload.Runtime.Public</Name>
     </ProjectReference>
     <ProjectReference Include="GDC.Metaverse.csproj">
       <Project>{C76554A5-9D82-B924-D343-2614F42DDA0C}</Project>

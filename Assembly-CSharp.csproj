@@ -1928,6 +1928,10 @@
       <Project>{0BD8A2A3-908D-6C93-786E-47AD0D39BF46}</Project>
       <Name>GDC.Metaverse.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="SingularityGroup.HotReload.Runtime.Public.csproj">
+      <Project>{6CA2FD5E-366A-5011-F089-4402BAEFD834}</Project>
+      <Name>SingularityGroup.HotReload.Runtime.Public</Name>
+    </ProjectReference>
     <ProjectReference Include="GDC.Metaverse.csproj">
       <Project>{C76554A5-9D82-B924-D343-2614F42DDA0C}</Project>
       <Name>GDC.Metaverse</Name>
