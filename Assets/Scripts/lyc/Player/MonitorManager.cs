@@ -5,7 +5,8 @@ public class MonitorManager : NetworkBehaviour
 {
     public static MonitorManager Instance;
     public Monitor[] monitors;
-    [Networked] public int currentMonitor{get;set;}
+    [Networked, OnChangedRender(nameof(OnCurrentMonitorChanged))]
+    public int currentMonitor { get; set; }
     // [Networked] public NetworkObjectRef PlayerRef { get; set; }
     [Networked] public PlayerInfo currentUser{ get; set; }
 
@@ -96,9 +97,17 @@ public class MonitorManager : NetworkBehaviour
             // 拒絕使用監視器
         }
     }
+    private void OnCurrentMonitorChanged()
+    {
+        if (!currentUser.HasInputAuthority) return;
+        Vector3 v = monitors[currentMonitor].transform.position;
+        v.y  -= 1.2f; 
+        currentUser.vrRig.transform.position = v;
+    }
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SetCurrentMonitor(int currentMonitor)
     {
+        // if (currentUser != player) return;
         this.currentMonitor = currentMonitor;
     }
 

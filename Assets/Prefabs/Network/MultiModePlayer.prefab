@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: -7816371721059583508}
   - component: {fileID: -2646353196525242035}
   - component: {fileID: -4593345138282915084}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MultiModePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,6 +193,7 @@ MonoBehaviour:
   rightHandAnchor: {fileID: 3557182546415751787}
   wheelchair: {fileID: -7816371721059583508}
   motorcycleController: {fileID: -2646353196525242035}
+  _isUsingMonitor: 0
   leftHandVisual: {fileID: 0}
   rightHandVisual: {fileID: 0}
 --- !u!114 &589814293760505198
@@ -234,7 +235,7 @@ MonoBehaviour:
   _autoAOIOverride: 1
   ConfigFlags: 0
   PhysicsSettings:
-    ForecastEnabled: 1
+    ForecastEnabled: 0
     DebugPhysics: 0
     GravityForecast: 2
     MaxExtrapolationTime: 0.15

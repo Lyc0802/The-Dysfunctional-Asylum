@@ -188,6 +188,33 @@ public class PlayerInfo : NetworkBehaviour
         vrRig.GetComponent<Vehicle>().ToggleVisibility(!b);
     }
 
+        
+    public void Teleport(Vector3 position, Quaternion rotation)
+    {
+        if (!HasStateAuthority) return;
+
+        NetworkTransform nt = GetComponent<NetworkTransform>();
+
+        if (nt != null)
+            nt.Teleport(position, rotation);
+        else
+            transform.SetPositionAndRotation(position, rotation);
+
+        RPC_TeleportLocalRig(position, rotation);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    private void RPC_TeleportLocalRig(Vector3 position, Quaternion rotation)
+    {
+        if (Device != DeviceType.VR || vrRig == null) return;
+
+        vrRig.transform.SetPositionAndRotation(
+            position - new Vector3(0, 0.6f, 0),
+            rotation
+        );
+    }
+
+
     public override void FixedUpdateNetwork()
     {
         if (!GetInput(out PlayerInputData input)) return;

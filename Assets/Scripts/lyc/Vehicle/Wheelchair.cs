@@ -77,32 +77,24 @@ public class Wheelchair : MonoBehaviour
         return new Vector2(leftDistance, rightDistance);
     }
 
+    
     public void MoveWheelchair(Vector2 wheelDistance)
     {
         float leftDistance = wheelDistance.x * moveMultiplier;
         float rightDistance = wheelDistance.y * moveMultiplier;
 
-        // Average distance of both wheels
         float distance = (leftDistance + rightDistance) * 0.5f * speed;
 
-        // Differential rotation
         float rotation = (rightDistance - leftDistance) / wheelSpacing;
         float rotationDegrees = rotation * Mathf.Rad2Deg;
 
-        // Delta rotation
+        Quaternion currentRotation = transform.rotation;
         Quaternion deltaRotation = Quaternion.Euler(0f, rotationDegrees, 0f);
+        Quaternion midpointRotation = currentRotation * Quaternion.Euler(0f, rotationDegrees * 0.5f, 0f);
 
-        // Midpoint heading
-        Quaternion midpointRotation = rb.rotation * Quaternion.Euler(0f, rotationDegrees * 0.5f, 0f);
-
-        // World-space displacement
         Vector3 movement = midpointRotation * Vector3.forward * distance;
 
-        // Apply Rigidbody movement
-        transform.position += movement;
-        transform.rotation *= deltaRotation;
-
-        // rb.MovePosition(rb.position + movement);
-        // rb.MoveRotation(rb.rotation * deltaRotation);
+        transform.SetPositionAndRotation(transform.position + movement, currentRotation * deltaRotation);
     }
+
 }
