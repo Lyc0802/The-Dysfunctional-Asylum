@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -7,9 +8,10 @@ public class WallFloorFitTool : EditorWindow
     private string floorPrefix = "Floor";
     private string wallPrefix  = "Wall";
     private bool alignBaseToFloorTop = true;
-
+    
     [MenuItem("Tools/Wall-Floor Fit Tool")]
     private static void Open() => GetWindow<WallFloorFitTool>("Wall-Floor Fit");
+    
 
     private void OnGUI()
     {
@@ -118,3 +120,4 @@ public class WallFloorFitTool : EditorWindow
         return Mathf.Sqrt(dx * dx + dz * dz);
     }
 }
+#endif
