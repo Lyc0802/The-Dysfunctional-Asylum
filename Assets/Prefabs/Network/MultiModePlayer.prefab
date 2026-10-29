@@ -138,12 +138,12 @@ GameObject:
   - component: {fileID: 2766157576448704012}
   - component: {fileID: 948190436795479519}
   - component: {fileID: 589814293760505198}
-  - component: {fileID: -3734785329311224256}
-  - component: {fileID: -6704570317980730687}
-  - component: {fileID: -6854447533534280332}
   - component: {fileID: -7816371721059583508}
   - component: {fileID: -2646353196525242035}
   - component: {fileID: -4593345138282915084}
+  - component: {fileID: 8945545431091548629}
+  - component: {fileID: 3202132245643984494}
+  - component: {fileID: 765866995975460161}
   m_Layer: 3
   m_Name: MultiModePlayer
   m_TagString: Untagged
@@ -181,6 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInfo
   _playerName: 
   _Device: 0
+  networkCharacterController: {fileID: 3202132245643984494}
+  characterMotor: {fileID: 765866995975460161}
   prefabPC: {fileID: 2865860596055117538, guid: 3b2245db90d911042832ec2d8317156f, type: 3}
   commander: {fileID: -4593345138282915084}
   lookSensitivity: 0.15
@@ -214,100 +216,9 @@ MonoBehaviour:
   Flags: 262402
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -3734785329311224256}
+  - {fileID: 3202132245643984494}
   - {fileID: 948190436795479519}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-3734785329311224256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9016506478830814873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkTransform
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 1
-  _autoAOIOverride: 1
-  ConfigFlags: 0
-  PhysicsSettings:
-    ForecastEnabled: 0
-    DebugPhysics: 0
-    GravityForecast: 2
-    MaxExtrapolationTime: 0.15
-    MinLinearDetectedError: 0.02
-    MinAngularDetectedError: 3
-    DeadzoneVelocityMode: 0
-    MaxLinearError: 0
-    MaxAngularError: 0
-    LowCorrectionProgressThreshold: 0.015
-    HighErrorSimilarityThreshold: 1
-    MaxErrorTotalTime: 0.5
-    MaxRemoteSleepIgnoreTime: 0.5
-    ErrorCorrectionType: 0
-    LinearVelCorrectionMul: 1
-    AngularVelCorrectionMul: 1
-    PositionCorrectionLerp: 0.15
-    RotationCorrectionLerp: 0.15
-    Spring: 75
-    Damper: 2
-    MinImpactfulCollisionAlignment: 0.3
-    ImpactStartCorrectionTime: 0.1
-    ImpactCorrectionTimeComplete: 0.3
---- !u!54 &-6704570317980730687
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9016506478830814873}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!136 &-6854447533534280332
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9016506478830814873}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7816371721059583508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,8 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Wheelchair
   leftWheel: {fileID: 0}
   rightWheel: {fileID: 0}
-  locomotor: {fileID: 0}
-  rb: {fileID: -6704570317980730687}
+  motor: {fileID: 765866995975460161}
   wheelSpacing: 0.8
   moveMultiplier: 1
   speed: 5
@@ -341,8 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MotorcycleController
   handlebar: {fileID: 0}
   grabbable: {fileID: 0}
-  locomotor: {fileID: 0}
-  rb: {fileID: -6704570317980730687}
+  motor: {fileID: 765866995975460161}
   maxThrottleAngle: 45
   maxSpeed: 8
   acceleration: 5
@@ -371,3 +280,63 @@ MonoBehaviour:
   forwardSpeed: 2.5
   backwardSpeed: 1.2
   turnSpeed: 90
+--- !u!143 &8945545431091548629
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.2
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3202132245643984494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.NetworkCharacterController
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  gravity: -20
+  jumpImpulse: 8
+  acceleration: 10
+  braking: 10
+  maxSpeed: 2
+  rotationSpeed: 15
+--- !u!114 &765866995975460161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d60396a3914a004eb84d33fe8aab497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleCharacterMotor
+  controller: {fileID: 8945545431091548629}
+  ncc: {fileID: 3202132245643984494}
+  gravity: -20
+  groundStickSpeed: -2

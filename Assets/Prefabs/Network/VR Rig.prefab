@@ -103,8 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Wheelchair
   leftWheel: {fileID: 4947087991633209226}
   rightWheel: {fileID: 6218624901550481955}
-  locomotor: {fileID: 0}
-  rb: {fileID: 0}
+  motor: {fileID: 0}
   wheelSpacing: 0.6
   moveMultiplier: 1
   speed: 10
@@ -3685,15 +3684,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6326028682910868495}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a652c9e867541e49b5ab3e132bea2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MotorcycleController
   handlebar: {fileID: 6316392489577624263}
   grabbable: {fileID: 3394450648210971897}
-  locomotor: {fileID: 0}
-  rb: {fileID: 0}
+  motor: {fileID: 0}
   maxThrottleAngle: 90
   maxSpeed: 8
   acceleration: 5
