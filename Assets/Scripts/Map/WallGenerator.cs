@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 
@@ -7,6 +9,7 @@ public static class WallGenerator
     private const float WallHeight    = 10f;  // 牆壁高度
 
     // 選單：Tools/Generate Walls Around Cube （快捷鍵 Ctrl/Cmd + Shift + W，可刪）
+
     [MenuItem("Tools/Generate Walls Around Cube %#w")]
     private static void GenerateWalls()
     {
@@ -61,6 +64,8 @@ public static class WallGenerator
         Debug.Log($"[WallGenerator] 依 '{cube.name}' (X={sizeX:F2}, Z={sizeZ:F2}) 生成 4 道牆壁完成。");
     }
 
+
+
     private static void CreateWall(GameObject parent, string name, Vector3 position, Vector3 scale)
     {
         GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -78,4 +83,6 @@ public static class WallGenerator
         return Selection.activeGameObject != null
             && Selection.activeGameObject.GetComponent<Renderer>() != null;
     }
+
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -294,7 +295,6 @@ public static class DoorCutter
         }
         return true;
     }
-
     [MenuItem("Tools/Cut Door Between Two Objects %#d", true)]
     private static bool ValidateCutDoors()
     {
@@ -302,3 +302,4 @@ public static class DoorCutter
         return n == 2 || n == 3;
     }
 }
+#endif

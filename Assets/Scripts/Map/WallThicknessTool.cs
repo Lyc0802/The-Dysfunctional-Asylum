@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,9 +17,9 @@ public class WallThicknessTool : EditorWindow
     // 只認這四個初始名稱（未被 DoorCutter 切過的原始牆）
     private static readonly HashSet<string> OriginalWallNames =
         new HashSet<string> { "Wall_North", "Wall_South", "Wall_East", "Wall_West" };
-
     [MenuItem("Tools/Wall Thickness Tool")]
     private static void Open() => GetWindow<WallThicknessTool>("Wall Thickness");
+
 
     private void OnGUI()
     {
@@ -158,3 +160,4 @@ public class WallThicknessTool : EditorWindow
 
     private static float SafeDiv(float v) => Mathf.Abs(v) < 1e-6f ? 1f : v;
 }
+#endif
