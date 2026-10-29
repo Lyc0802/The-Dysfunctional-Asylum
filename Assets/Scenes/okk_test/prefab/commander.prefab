@@ -148,8 +148,9 @@ GameObject:
   - component: {fileID: 9001909390869611767}
   - component: {fileID: 2363511475035964343}
   - component: {fileID: 1282212854857504254}
-  - component: {fileID: 809215141225122697}
   - component: {fileID: 7221837022974374046}
+  - component: {fileID: 364055257723132057}
+  - component: {fileID: 9000427924973322055}
   m_Layer: 0
   m_Name: commander
   m_TagString: Untagged
@@ -230,8 +231,55 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!143 &809215141225122697
-CharacterController:
+--- !u!114 &7221837022974374046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906305292215319054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353a9f763dc89e0469dd3d5ce2b349e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  cameraPivot: {fileID: 700417141240877572}
+  mouseSensitivity: 0.1
+  maxHeadYaw: 100
+  minPitch: -60
+  maxPitch: 60
+  forwardSpeed: 2.5
+  backwardSpeed: 1.2
+  turnSpeed: 90
+--- !u!54 &364055257723132057
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906305292215319054}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &9000427924973322055
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -245,34 +293,11 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
+  serializedVersion: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7221837022974374046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8906305292215319054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 353a9f763dc89e0469dd3d5ce2b349e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  cameraPivot: {fileID: 0}
-  mouseSensitivity: 0.1
-  maxHeadYaw: 100
-  minPitch: -60
-  maxPitch: 60
-  forwardSpeed: 2.5
-  backwardSpeed: 1.2
-  turnSpeed: 90
-  gravity: -20
