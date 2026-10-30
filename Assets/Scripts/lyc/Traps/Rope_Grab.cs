@@ -2,77 +2,81 @@ using UnityEngine;
 
 public class Rope_Grab : MonoBehaviour
 {
-
     public GameObject rock_rope;
     public GameObject Rock;
     public GameObject This_rope;
     public Vector3 initial_position;
+    public rock_fall fallTrigger;
 
+    [Header("Lift limit")]
+    [Min(0f), Tooltip("Maximum rock height above its starting position, in world units.")]
+    public float maxLiftHeight = 2f;
 
+    private bool isPulling;
+    private Vector3 lastPosition;
+    private float initialRockY;
+    private Vector3 initialRockRopePosition;
+    private Vector3 initialRockRopeScale;
 
+    public float LiftedHeight => Mathf.Max(0f, Rock.transform.position.y - initialRockY);
 
-    private Vector3 rock_last_position ;
-    private Vector3 rock_rope_last_position ;
-    private Vector3 rock_rope_last_scale ;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         initial_position = This_rope.transform.position;
+        initialRockY = Rock.transform.position.y;
+        initialRockRopePosition = rock_rope.transform.position;
+        initialRockRopeScale = rock_rope.transform.localScale;
     }
 
-    
-    private Vector3 lastPosition;
-
-    // 抓取時呼叫
     public void Begin_Pull()
     {
+        if (fallTrigger != null && !fallTrigger.CanPull)
+        {
+            isPulling = false;
+            return;
+        }
+        if (fallTrigger != null) fallTrigger.Interrupted();
         lastPosition = This_rope.transform.position;
-
-
-
-        Rock.transform.position = rock_last_position;
-        rock_rope.transform.position = rock_rope_last_position;
-        rock_rope.transform.localScale = rock_rope_last_scale; 
+        isPulling = true;
     }
 
-    // 抓取期間一直呼叫
     public void Update_Pull()
     {
-        Vector3 position=This_rope.transform.position;
-        Vector3 pullDirection = Vector3.down;
-
-        float delta = Vector3.Dot(
-            position - lastPosition,
-            pullDirection
-        );
-
-        rock_rope.transform.position = new Vector3(rock_rope.transform.position.x, rock_rope.transform.position.y+delta/4, rock_rope.transform.position.z);
-        rock_rope.transform.localScale = new Vector3(rock_rope.transform.localScale.x, rock_rope.transform.localScale.y - delta / 2, rock_rope.transform.localScale.z);
-        Rock.transform.position = new Vector3(Rock.transform.position.x, Rock.transform.position.y + delta / 2, Rock.transform.position.z);
-
+        if (!isPulling) return;
+        if (fallTrigger != null && !fallTrigger.CanPull)
+        {
+            isPulling = false;
+            return;
+        }
+        Vector3 position = This_rope.transform.position;
+        float delta = Vector3.Dot(position - lastPosition, Vector3.down);
+        MoveRock(delta / 2f);
         lastPosition = position;
-
-        rock_last_position = Rock.transform.position ;
-        rock_rope_last_position = rock_rope.transform.position ;
-        rock_rope_last_scale = rock_rope.transform.localScale ; 
-
-
     }
 
-    //結束時呼叫
+    // Shared by pulling and falling so the rope always matches the rock's height.
+    public void MoveRock(float distance)
+    {
+        // The scene rope is a cylinder with a mesh height of two local units.
+        float worldUnitsPerScale = rock_rope.transform.TransformVector(Vector3.up).magnitude /
+            Mathf.Max(Mathf.Abs(rock_rope.transform.localScale.y), 0.0001f);
+        float maxHeight = Mathf.Max(0f, initialRockRopeScale.y * 2f * worldUnitsPerScale - 0.01f);
+        maxHeight = Mathf.Min(maxHeight, Mathf.Max(0f, maxLiftHeight));
+        float height = Mathf.Clamp(LiftedHeight + distance, 0f, maxHeight);
+        Vector3 position = Rock.transform.position;
+        position.y = initialRockY + height;
+        Rock.transform.position = position;
+        rock_rope.transform.position = initialRockRopePosition + Vector3.up * (height / 2f);
+        Vector3 scale = initialRockRopeScale;
+        scale.y -= height / (2f * Mathf.Max(worldUnitsPerScale, 0.0001f));
+        rock_rope.transform.localScale = scale;
+    }
+
     public void End_Pull()
     {
         This_rope.transform.position = initial_position;
-        
+        if (!isPulling) return;
+        isPulling = false;
+        if (fallTrigger != null) fallTrigger.Set_timer();
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }

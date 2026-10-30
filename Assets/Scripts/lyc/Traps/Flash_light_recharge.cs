@@ -3,10 +3,20 @@ using UnityEngine.Events;
 
 
 
-public class ShakeRechargeFlashlight : MonoBehaviour
+public class Flash_light_recharge : MonoBehaviour
 {
     private Light targetLight;
     private bool light_check = false;
+
+    private void Awake()
+    {
+        targetLight = GetComponent<Light>();
+        if (targetLight == null)
+        {
+            Debug.LogError("Flash_light_recharge requires a Light on the same object.", this);
+            enabled = false;
+        }
+    }
 
     [Header("追蹤位置：建議指定手電筒握把上的空物件")]
     [SerializeField] private Transform trackingPoint;

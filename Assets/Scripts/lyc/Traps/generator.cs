@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class YSlideRecharge : MonoBehaviour
+public class generator : MonoBehaviour
 {
     [Header("滑動物件")]
     [SerializeField] private Transform slider;
@@ -10,7 +10,7 @@ public class YSlideRecharge : MonoBehaviour
     [SerializeField, Range(0f, 100f)]
     private float battery = 0f;
 
-    [Tooltip("超過這個速度才充電，單位為本地座標單位/秒")]
+    [Tooltip("超過這個速度才充電，單位為父物件局部座標單位/秒")]
     [SerializeField, Min(0.01f)]
     private float minimumSpeed = 0.8f;
 
@@ -39,7 +39,7 @@ public class YSlideRecharge : MonoBehaviour
     public void BeginHold()
     {
         isHeld = true;
-        previousPosition = Slider.position;
+        previousPosition = Slider.localPosition;
         nextFeedbackTime = Time.time;
     }
 
@@ -54,12 +54,12 @@ public class YSlideRecharge : MonoBehaviour
         if (!isHeld || Time.deltaTime <= 0f)
             return;
 
-        Vector3 currentPosition = Slider.position;
+        Vector3 currentPosition = Slider.localPosition;
         Vector3 movement = currentPosition - previousPosition;
 
-        // Slider.up 是物件旋轉後，自身 Y 軸在世界中的方向。
+        // Use the same parent-local rail axis as GeneratorLocalSlide.
         float distance = Mathf.Abs(
-            Vector3.Dot(movement, Slider.up)
+            Vector3.Dot(movement, Slider.localRotation * Vector3.up)
         );
 
         previousPosition = currentPosition;
