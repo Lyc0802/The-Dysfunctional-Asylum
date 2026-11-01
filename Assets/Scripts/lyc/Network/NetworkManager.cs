@@ -6,6 +6,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Photon.Voice.Fusion;
 
 public enum DeviceType : byte
 {
@@ -137,7 +138,14 @@ public class NetworkManager : MonoBehaviour
 
         // 每個 Runner 都有自己的玩家資訊與輸入來源
         var settings = go.AddComponent<RunnerPeerSettings>();
+        
         settings.Initialize(peerDevice, peerName);
+
+        var voice = go.AddComponent<FusionVoiceClient>();
+        var voiceManager = go.AddComponent<VoiceChatManager>();
+        voice.UseFusionAppSettings = true;
+        Debug.Log("ppp:"+voice.UsePrimaryRecorder);
+        voice.AutoConnectAndJoin = true;
 
         // 使用 NetworkEvents 註冊 OnInput
         // var events = go.AddComponent<NetworkEvents>();
