@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: -2133353856462324738}
   - component: {fileID: -5541825741506868037}
   - component: {fileID: -598020981094977627}
+  - component: {fileID: 1833184659148640545}
   m_Layer: 3
   m_Name: MultiModePlayer
   m_TagString: Untagged
@@ -223,6 +224,7 @@ MonoBehaviour:
   - {fileID: 3202132245643984494}
   - {fileID: 948190436795479519}
   - {fileID: -598020981094977627}
+  - {fileID: 1833184659148640545}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-7816371721059583508
 MonoBehaviour:
@@ -516,5 +518,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVoiceAudio
   voiceAudioSource: {fileID: -2133353856462324738}
+  recorder: {fileID: -9193632006979538655}
   _Always2D:
     RawValue: 0
+--- !u!114 &1833184659148640545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6376dd7fc23b3764483a7349b58502e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonVoice.Fusion::Photon.Voice.Fusion.VoiceNetworkObject

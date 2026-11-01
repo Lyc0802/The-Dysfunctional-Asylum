@@ -144,8 +144,8 @@ public class NetworkManager : MonoBehaviour
         var voice = go.AddComponent<FusionVoiceClient>();
         var voiceManager = go.AddComponent<VoiceChatManager>();
         voice.UseFusionAppSettings = true;
-        Debug.Log("ppp:"+voice.UsePrimaryRecorder);
-        voice.AutoConnectAndJoin = true;
+        // voice.AutoConnectAndJoin = true;
+        voiceManager.voiceClient=voice;
 
         // 使用 NetworkEvents 註冊 OnInput
         // var events = go.AddComponent<NetworkEvents>();
@@ -188,6 +188,11 @@ public class NetworkManager : MonoBehaviour
             _runners.Add(runner);
 
             Debug.Log($"Runner {index}:, Player={runner.LocalPlayer}, Device={peerDevice}");
+            if (result.Ok && runner.SessionInfo.IsValid && !voice.Client.IsConnected)
+            {
+                bool started = voice.ConnectAndJoinRoom();
+                Debug.Log($"Voice Connect Started: {started}");
+            }
             return runner;
         }
         catch
