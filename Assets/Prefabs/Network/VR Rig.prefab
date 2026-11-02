@@ -2465,6 +2465,7 @@ GameObject:
   - component: {fileID: 9023937675529072354}
   - component: {fileID: 3783362594344187999}
   - component: {fileID: 98157958361538113}
+  - component: {fileID: 789816317626815381}
   m_Layer: 0
   m_Name: VR Rig
   m_TagString: Untagged
@@ -2695,6 +2696,21 @@ MonoBehaviour:
   positionSmooth: 20
   rotationSmooth: 20
   isUsingMonitor: 0
+--- !u!114 &789816317626815381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5416297768405025165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7e6d139678f5745a4ce9177c11042a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonitorEffectController
+  playerCamera: {fileID: 3770758350132275154}
+  monitorMaterial: {fileID: 2100000, guid: 0cd04889376d72f4481cc819268ebbae, type: 2}
+  isBroken: 0
 --- !u!1 &5768382798698903791
 GameObject:
   m_ObjectHideFlags: 0
