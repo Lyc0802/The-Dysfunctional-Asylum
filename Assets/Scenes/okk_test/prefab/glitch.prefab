@@ -149,12 +149,11 @@ GameObject:
   - component: {fileID: 7532594052992418953}
   - component: {fileID: 5974461290925225299}
   - component: {fileID: -7313244592306428834}
-  - component: {fileID: 8311630810771560916}
-  - component: {fileID: 423359071105770090}
   - component: {fileID: 3503478710018736429}
   - component: {fileID: 4126819671365967120}
   - component: {fileID: 4435237159513801356}
   - component: {fileID: 39814426112703894}
+  - component: {fileID: 5101175010248650392}
   m_Layer: 0
   m_Name: glitch
   m_TagString: Untagged
@@ -253,56 +252,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ghostLayerName: Ghost
---- !u!136 &8311630810771560916
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2752105659544182303}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &423359071105770090
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2752105659544182303}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 4
-  m_CollisionDetection: 0
 --- !u!114 &3503478710018736429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +266,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   cameraPivot: {fileID: 1344878991812589328}
   mouseSensitivity: 0.1
-  maxHeadYaw: 100
   minPitch: -60
   maxPitch: 60
   moveSpeed: 3
@@ -378,6 +326,31 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!143 &5101175010248650392
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2752105659544182303}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5133146128473166285
 GameObject:
   m_ObjectHideFlags: 0
