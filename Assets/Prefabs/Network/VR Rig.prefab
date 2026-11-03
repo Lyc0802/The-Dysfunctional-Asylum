@@ -4228,7 +4228,7 @@ MonoBehaviour:
   isVisible: 1
   usingMotor: 0
   wheelchair: {fileID: 470878878938415504}
-  motor: {fileID: 2712800518618418343}
+  motor: {fileID: 6999937930527220636}
   playerInfo: {fileID: 0}
 --- !u!114 &3783362594344187999
 MonoBehaviour:
@@ -4246,7 +4246,7 @@ MonoBehaviour:
   leftHaneAnchor: {fileID: 2525814398024218377}
   rightHaneAnchor: {fileID: 3660553226921491055}
   vehicle: {fileID: 9023937675529072354}
-  motorHandlebar: {fileID: 8949576649968526732}
+  motorHandlebar: {fileID: 78905665988730568}
   wc: {fileID: 470878878938415504}
   leftHandVisual: {fileID: 8467454177620805802}
   rightHandVisual: {fileID: 3942246245382874301}

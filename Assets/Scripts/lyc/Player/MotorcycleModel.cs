@@ -2,75 +2,42 @@ using UnityEngine;
 
 public class MotorcycleModel : MonoBehaviour
 {
-     [Header("Reference")]
+    [Header("Reference")]
     [SerializeField] private Transform reference;
 
     [Header("Objects to Rotate")]
     [SerializeField] private Transform[] targets;
 
-    private Vector3[] initialOffsets;
-    private Quaternion[] initialRotations;
-
     private float initialZ;
-    private Quaternion initialParentRotation;
+    private float[] initialTargetZ;
 
     private void Start()
     {
         if (reference == null || targets == null) return;
 
         initialZ = reference.localEulerAngles.z;
-
-        initialParentRotation = reference.parent != null
-            ? reference.parent.rotation
-            : Quaternion.identity;
-
-        initialOffsets = new Vector3[targets.Length];
-        initialRotations = new Quaternion[targets.Length];
+        initialTargetZ = new float[targets.Length];
 
         for (int i = 0; i < targets.Length; i++)
         {
             if (targets[i] == null) continue;
-
-            initialOffsets[i] =
-                Quaternion.Inverse(initialParentRotation) *
-                (targets[i].position - reference.position);
-
-            initialRotations[i] =
-                Quaternion.Inverse(initialParentRotation) *
-                targets[i].rotation;
+            initialTargetZ[i] = targets[i].localEulerAngles.z;
         }
     }
 
     private void LateUpdate()
     {
-        if (reference == null || initialOffsets == null) return;
+        if (reference == null || initialTargetZ == null) return;
 
-        Quaternion parentRotation = reference.parent != null
-            ? reference.parent.rotation
-            : Quaternion.identity;
-
-        float deltaZ = Mathf.DeltaAngle(
-            initialZ,
-            reference.localEulerAngles.z
-        );
-
-        Quaternion zRotation = Quaternion.AngleAxis(
-            deltaZ,
-            Vector3.forward
-        );
-
-        Quaternion finalRotation = parentRotation * zRotation;
+        float deltaZ = Mathf.DeltaAngle(initialZ, reference.localEulerAngles.z);
 
         for (int i = 0; i < targets.Length; i++)
         {
             if (targets[i] == null) continue;
 
-            targets[i].position =
-                reference.position +
-                finalRotation * initialOffsets[i];
-
-            targets[i].rotation =
-                finalRotation * initialRotations[i];
+            Vector3 angles = targets[i].localEulerAngles;
+            angles.z = initialTargetZ[i] + deltaZ;
+            targets[i].localEulerAngles = angles;
         }
     }
 }
