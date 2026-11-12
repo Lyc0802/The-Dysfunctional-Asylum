@@ -26,7 +26,7 @@ public class MotorcycleController : MonoBehaviour
     public float Throttle { get; private set; }
     public float Steering { get; private set; }
 
-    private Quaternion _initialRotation = new Quaternion(0f, 0f, 0f, 1f);
+    private Quaternion _initialRotation = new Quaternion(0.707107f, 0.707107f, 0f, 0f);
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class MotorcycleController : MonoBehaviour
     private void LateUpdate()
     {
         if (grabbable == null || handlebar == null) return;
-        // UpdateHandlebar(Time.deltaTime);
+        UpdateHandlebar(Time.deltaTime);
     }
 
     public void UpdateHandlebar(float dt)
@@ -63,7 +63,7 @@ public class MotorcycleController : MonoBehaviour
         Quaternion relativeRotation = Quaternion.Inverse(_initialRotation) * handlebarLocalRotation;
         Vector3 euler = relativeRotation.eulerAngles;
 
-        float steeringAngle = Mathf.DeltaAngle(0f, euler.z);
+        float steeringAngle = Mathf.DeltaAngle(0f, euler.x);
         float throttleAngle = Mathf.DeltaAngle(0f, euler.y);
 
         Throttle = Mathf.Clamp01(-throttleAngle / maxThrottleAngle);

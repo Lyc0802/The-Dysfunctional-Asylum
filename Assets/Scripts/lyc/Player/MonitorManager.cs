@@ -1,232 +1,134 @@
-
 using UnityEngine;
 using Fusion;
 
 public class MonitorManager : NetworkBehaviour
 {
     public static MonitorManager Instance;
-
     public Monitor[] monitors;
-
-    [Header("Monitor Damage")]
-    [SerializeField] private float defaultBreakDuration = 10f;
-
     [Networked, OnChangedRender(nameof(OnCurrentMonitorChanged))]
     public int currentMonitor { get; set; }
+    // [Networked] public NetworkObjectRef PlayerRef { get; set; }
+    [Networked] public PlayerInfo currentUser{ get; set; }
 
-    [Networked]
-    public PlayerInfo currentUser { get; set; }
-
-    [Networked, Capacity(32)]
-    public NetworkArray<TickTimer> brokenTimers => default;
-
-    private int lastEffectMonitor = -1;
-    private bool lastEffectBroken;
-
-    private void Awake()
+    void Awake()
     {
-        if (Instance != null && Instance != this) return;
-        Instance = this;
-    }
-
-    public override void Spawned()
-    {
-        if (Instance != null && Instance != this)
+        if(Instance != null)
         {
-            if (HasStateAuthority) Runner.Despawn(Object);
             return;
         }
-
         Instance = this;
-
-        if (HasStateAuthority) currentMonitor = 0;
-        lastEffectMonitor = -1;
     }
-
-    private void OnDestroy()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public override void Spawned()
     {
-        if (Instance == this) Instance = null;
-    }
-
-    private bool IsValidMonitor(int index)
-    {
-        return monitors != null && index >= 0 && index < monitors.Length && index < brokenTimers.Length && monitors[index] != null;
-    }
-
-    private bool IsValidPlayer(PlayerInfo player, PlayerRef source)
-    {
-        return player != null && player.Object != null && player.Object.InputAuthority == source && source != PlayerRef.None;
-    }
-
-    private bool CanControlMonitor(PlayerInfo player, PlayerRef source)
-    {
-        return IsValidPlayer(player, source) && currentUser == player;
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_SendRequest(PlayerInfo player, RpcInfo info = default)
-    {
-        if (!IsValidPlayer(player, info.Source)) return;
-
-        bool isApproved = currentUser == null && IsValidMonitor(currentMonitor);
-
-        if (isApproved)
+        if (!HasStateAuthority) return;
+        if(Instance != null && Instance != this)
         {
-            currentUser = player;
-            player.isUsingMonitor = true;
+            Runner.Despawn(this.Object);
+            return;
         }
+        // currentMonitor = -1;
+        
+    }
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SendRequest(PlayerInfo player)
+    {
 
-        RPC_SendRespond(player.Object.InputAuthority, isApproved, true, player);
+        bool isApproved = currentUser == null;
+        Debug.Log("Monitor: is Request " + isApproved);
+
+        if (isApproved) currentUser = player;
+        player.isUsingMonitor = true;
+        RPC_SendRespond(player.Object.InputAuthority, isApproved, true, currentUser);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_SendRelease(PlayerInfo player, RpcInfo info = default)
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SendRelease(PlayerInfo player)
     {
-        if (!IsValidPlayer(player, info.Source)) return;
-
         bool isApproved = currentUser == player;
+        Debug.Log("Monitor: is Request " + isApproved);
 
-        if (isApproved)
-        {
-            player.isUsingMonitor = false;
-            currentUser = null;
-        }
 
-        RPC_SendRespond(player.Object.InputAuthority, isApproved, false, player);
+        // player.SetIsUsingMonitor(false);
+        player.isUsingMonitor = false;
+    
+        RPC_SendRespond(player.Object.InputAuthority, isApproved, false, currentUser);
+        if (isApproved) currentUser = null;
     }
 
+    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    // public void RPC_Release()
+    // {
+    //     currentUser = null;
+    // }
+
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendRespond([RpcTarget] PlayerRef target, bool isApproved, bool isGetIn, PlayerInfo player)
     {
-        if (!isApproved || player == null || player.Object == null || !player.Object.HasInputAuthority || player.vrRig == null) return;
-
-        var follower = player.vrRig.GetComponent<VRCameraSeatFollower>();
-        var effect = player.vrRig.GetComponent<MonitorEffectController>();
-
-        if (isGetIn)
+        if (isApproved)
         {
-            if (IsValidMonitor(currentMonitor))
+            if (isGetIn)
             {
-                Vector3 v = monitors[currentMonitor].transform.position;
-                v.y -= 1.2f;
-                player.vrRig.transform.position = v;
+                if(player != null && player.Object.HasInputAuthority)
+                {
+                    Vector3 v = monitors[currentMonitor].transform.position;
+                    v.y  -= 1.2f; 
+                    player.vrRig.transform.position = v;
+                    player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = true;
+                    player.SetIsUsingMonitor(true);
+                }
+
             }
-
-            if (follower != null) follower.isUsingMonitor = true;
-
-            if (effect != null)
+            else
             {
-                effect.UsingMonitor(true);
-                effect.SetBroken(IsMonitorBroken(currentMonitor));
+                if(player != null && player.Object.HasInputAuthority)
+                {
+                    player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
+                    player.vrRig.GetComponent<VRCameraSeatFollower>().isUsingMonitor = false;
+                    player.SetIsUsingMonitor(false);
+                    Debug.Log("Monitor: back");
+                    // RPC_Release();
+                }
             }
-
-            player.SetIsUsingMonitor(true);
-            lastEffectMonitor = currentMonitor;
-            lastEffectBroken = IsMonitorBroken(currentMonitor);
         }
         else
         {
-            player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
-
-            if (follower != null) follower.isUsingMonitor = false;
-            if (effect != null) effect.UsingMonitor(false);
-
-            player.SetIsUsingMonitor(false);
-            lastEffectMonitor = -1;
-            lastEffectBroken = false;
+            // 拒絕使用監視器
         }
     }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_SetCurrentMonitor(int index, PlayerInfo player, RpcInfo info = default)
-    {
-        if (!CanControlMonitor(player, info.Source) || !IsValidMonitor(index)) return;
-        currentMonitor = index;
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_AddCurrentMonitor(int amount, PlayerInfo player, RpcInfo info = default)
-    {
-        if (!CanControlMonitor(player, info.Source) || monitors == null || monitors.Length == 0) return;
-
-        int next = ((currentMonitor + amount) % monitors.Length + monitors.Length) % monitors.Length;
-        if (!IsValidMonitor(next)) return;
-
-        currentMonitor = next;
-    }
-
-    public void BreakMonitor(int index, float seconds)
-    {
-        if (!HasStateAuthority || !IsValidMonitor(index) || seconds <= 0f) return;
-        brokenTimers.Set(index, TickTimer.CreateFromSeconds(Runner, seconds));
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_RequestBreakMonitor(int index, PlayerInfo player, RpcInfo info = default)
-    {
-        if (!IsValidPlayer(player, info.Source) || !IsValidMonitor(index)) return;
-        if (player.Device != DeviceType.VR) return;
-
-        BreakMonitor(index, defaultBreakDuration);
-    }
-
-    public void RepairMonitor(int index)
-    {
-        if (!HasStateAuthority || !IsValidMonitor(index)) return;
-        brokenTimers.Set(index, TickTimer.None);
-    }
-
-    public bool IsMonitorBroken(int index)
-    {
-        if (Runner == null || !IsValidMonitor(index)) return false;
-        return !brokenTimers[index].ExpiredOrNotRunning(Runner);
-    }
-
-    public float GetMonitorRemainingTime(int index)
-    {
-        if (!IsMonitorBroken(index)) return 0f;
-        return brokenTimers[index].RemainingTime(Runner) ?? 0f;
-    }
-
     private void OnCurrentMonitorChanged()
     {
-        UpdateLocalMonitor(true);
+        if (!currentUser.HasInputAuthority) return;
+        Vector3 v = monitors[currentMonitor].transform.position;
+        v.y  -= 1.2f; 
+        currentUser.vrRig.transform.position = v;
+    }
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SetCurrentMonitor(int currentMonitor)
+    {
+        // if (currentUser != player) return;
+        this.currentMonitor = currentMonitor;
     }
 
-    private void UpdateLocalMonitor(bool force = false)
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_AddCurrentMonitor(int amount, PlayerInfo player)
     {
-        if (currentUser == null || currentUser.Object == null || !currentUser.Object.HasInputAuthority) return;
-        if (!IsValidMonitor(currentMonitor) || currentUser.vrRig == null) return;
-
-        bool broken = IsMonitorBroken(currentMonitor);
-        bool monitorChanged = lastEffectMonitor != currentMonitor;
-
-        if (!force && !monitorChanged && lastEffectBroken == broken) return;
-
-        if (monitorChanged || force)
-        {
-            Vector3 v = monitors[currentMonitor].transform.position;
-            v.y -= 1.2f;
-            currentUser.vrRig.transform.position = v;
-        }
-
-        var effect = currentUser.vrRig.GetComponent<MonitorEffectController>();
-        if (effect != null) effect.SetBroken(broken);
-
-        lastEffectMonitor = currentMonitor;
-        lastEffectBroken = broken;
+        if (currentUser != player) return;
+        currentMonitor += amount + monitors.Length;
+        currentMonitor %= monitors.Length;
     }
 
     public bool isUsed()
     {
-        return currentUser != null;
+        return MonitorManager.Instance.currentUser != null;
+
     }
 
+    // Update is called once per frame
     public override void Render()
     {
-        if (currentUser == null || !IsValidMonitor(currentMonitor)) return;
-
+        if(currentUser == null || currentMonitor == -1) return;
         monitors[currentMonitor].SetRotation(currentUser.GetHeadRotation());
-        UpdateLocalMonitor();
     }
 }
