@@ -179,7 +179,7 @@ MonoBehaviour:
   _State: 0
   _currentBattery: 0
   _InGameTime: 0
-  VRWinningTime: 600
+  VRWinningTime: 360
   _LastWinning: 0
 --- !u!4 &27259098
 Transform:

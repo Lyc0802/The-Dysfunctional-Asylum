@@ -101,31 +101,36 @@ public class WheelchairWheel : MonoBehaviour
             float angle = i * 360f / count;
             float rad = angle * Mathf.Deg2Rad;
 
-            GameObject segment =
-                new GameObject($"Collider_{i}");
-
+            GameObject segment = new GameObject($"Collider_{i}");
             segment.transform.SetParent(transform, false);
 
-            // Position on XY plane, then rotate to selected axis
+            // World-space radius
             Vector3 position = new Vector3(
                 radius * Mathf.Cos(rad),
                 radius * Mathf.Sin(rad),
                 0f
             );
 
-            segment.transform.localPosition =
-                axisRotation * position;
+            Vector3 worldPosition =
+                transform.position +
+                transform.rotation * (axisRotation * position);
 
-            segment.transform.localRotation =
-                axisRotation * Quaternion.Euler(0, 0, angle + 90f);
+            segment.transform.position = worldPosition;
 
-            BoxCollider col =
-                segment.AddComponent<BoxCollider>();
+            segment.transform.rotation =
+                transform.rotation *
+                axisRotation *
+                Quaternion.Euler(0, 0, angle + 90f);
+
+            // Compensate for parent scale
+            Vector3 scale = segment.transform.lossyScale;
+
+            BoxCollider col = segment.AddComponent<BoxCollider>();
 
             col.size = new Vector3(
-                segmentLength,
-                thickness,
-                thickness
+                segmentLength / Mathf.Abs(scale.x) * 1.2f,
+                thickness / Mathf.Abs(scale.y),
+                thickness / Mathf.Abs(scale.z)
             );
 
             col.isTrigger = true;
