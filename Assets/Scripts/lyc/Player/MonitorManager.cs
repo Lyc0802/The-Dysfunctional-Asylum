@@ -10,6 +10,8 @@ public class MonitorManager : NetworkBehaviour
 
     [Header("Monitor Damage")]
     [SerializeField] private float defaultBreakDuration = 10f;
+    [Header("Monitor Battery")]
+    [SerializeField] private float batteryCostPerSecond = 1f;
 
     [Networked, OnChangedRender(nameof(OnCurrentMonitorChanged))]
     public int currentMonitor { get; set; }
@@ -43,6 +45,24 @@ public class MonitorManager : NetworkBehaviour
         lastEffectMonitor = -1;
     }
 
+    public override void FixedUpdateNetwork()
+    {
+        if (!HasStateAuthority || currentUser == null || GameManager.Instance == null) return;
+
+        if (GameManager.Instance.currentBattery <= 0f)
+        {
+            ForceReleaseMonitor();
+            return;
+        }
+
+        if (!IsValidMonitor(currentMonitor)) return;
+
+        GameManager.Instance.AddBattery(-batteryCostPerSecond * Runner.DeltaTime);
+
+        if (GameManager.Instance.currentBattery <= 0f)
+            ForceReleaseMonitor();
+    }
+
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
@@ -63,12 +83,27 @@ public class MonitorManager : NetworkBehaviour
         return IsValidPlayer(player, source) && currentUser == player;
     }
 
+    private void ForceReleaseMonitor()
+    {
+        if (!HasStateAuthority || currentUser == null) return;
+
+        PlayerInfo player = currentUser;
+        player.isUsingMonitor = false;
+        currentUser = null;
+
+        if (player.Object != null && player.Object.InputAuthority != PlayerRef.None)
+            RPC_SendRespond(player.Object.InputAuthority, true, false, player);
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_SendRequest(PlayerInfo player, RpcInfo info = default)
     {
         if (!IsValidPlayer(player, info.Source)) return;
 
-        bool isApproved = currentUser == null && IsValidMonitor(currentMonitor);
+        bool isApproved =   currentUser == null && 
+                            IsValidMonitor(currentMonitor) && 
+                            GameManager.Instance != null && 
+                            GameManager.Instance.currentBattery > 0f;
 
         if (isApproved)
         {
@@ -129,7 +164,10 @@ public class MonitorManager : NetworkBehaviour
             player.vrRig.transform.localPosition = new Vector3(0f, -0.6f, 0f);
 
             if (follower != null) follower.isUsingMonitor = false;
-            if (effect != null) effect.UsingMonitor(false);
+            if (effect != null)
+            {
+                effect.UsingMonitor(false);
+            }
 
             player.SetIsUsingMonitor(false);
             lastEffectMonitor = -1;
@@ -198,6 +236,8 @@ public class MonitorManager : NetworkBehaviour
         if (currentUser == null || currentUser.Object == null || !currentUser.Object.HasInputAuthority) return;
         if (!IsValidMonitor(currentMonitor) || currentUser.vrRig == null) return;
 
+        var effect = currentUser.vrRig.GetComponent<MonitorEffectController>();
+
         bool broken = IsMonitorBroken(currentMonitor);
         bool monitorChanged = lastEffectMonitor != currentMonitor;
 
@@ -210,7 +250,6 @@ public class MonitorManager : NetworkBehaviour
             currentUser.vrRig.transform.position = v;
         }
 
-        var effect = currentUser.vrRig.GetComponent<MonitorEffectController>();
         if (effect != null) effect.SetBroken(broken);
 
         lastEffectMonitor = currentMonitor;

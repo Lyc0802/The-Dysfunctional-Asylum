@@ -6,7 +6,7 @@ public class MonitorEffectController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Material monitorMaterial;
     [SerializeField] private bool isBroken;
-
+    
     private UniversalAdditionalCameraData cameraData;
     private static readonly int IsBrokenID = Shader.PropertyToID("_IsBroken");
 

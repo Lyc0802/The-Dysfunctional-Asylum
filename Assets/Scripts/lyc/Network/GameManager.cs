@@ -137,6 +137,8 @@ public class GameManager : NetworkBehaviour
         State = GameState.Lobby;
     }
 
+    
+
     public void SetBattery(float value)
     {
         if (!HasStateAuthority) return;
@@ -149,6 +151,7 @@ public class GameManager : NetworkBehaviour
         if (!HasStateAuthority) return;
 
         SetBattery(currentBattery + amount);
+        currentBattery = Mathf.Clamp(currentBattery, 0f, maxBattery);
     }
 
     private void OnGameStateChanged()

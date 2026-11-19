@@ -285,12 +285,22 @@ public class PlayerInfo : NetworkBehaviour
         if (input.usingMotor)
         {
             if (motorcycleController == null) return;
+            if (GameManager.Instance.currentBattery > 0)
+            {
+                 MotorcycleSpeed = motorcycleController.MoveMotorcycle(
+                    Runner.DeltaTime,
+                    input.handlebarLocalRotation,
+                    MotorcycleSpeed
+                );
 
-            MotorcycleSpeed = motorcycleController.MoveMotorcycle(
-                Runner.DeltaTime,
-                input.handlebarLocalRotation,
-                MotorcycleSpeed
-            );
+                float motorPowerComsumptionCoef = -.05f;
+
+                if (HasStateAuthority && Mathf.Abs(MotorcycleSpeed) > 0.01f)
+                {
+                    GameManager.Instance.AddBattery(Mathf.Abs(MotorcycleSpeed) * Runner.DeltaTime * motorPowerComsumptionCoef);
+                }
+            }
+           
         }
         else
         {
