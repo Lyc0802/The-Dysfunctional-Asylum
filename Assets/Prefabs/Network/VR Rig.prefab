@@ -2040,7 +2040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7450952200153998635
 Transform:
   m_ObjectHideFlags: 0
@@ -4459,7 +4459,6 @@ MonoBehaviour:
   playerCamera: {fileID: 3770758350132275154}
   monitorMaterial: {fileID: 2100000, guid: 0cd04889376d72f4481cc819268ebbae, type: 2}
   isBroken: 0
-  noPowerIcon: {fileID: 0}
 --- !u!1 &5420970688313412842
 GameObject:
   m_ObjectHideFlags: 0
@@ -8436,7 +8435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2959941728615038550, guid: 6f201b2f530722d46a2340c54aa0c786, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3040075513484355167, guid: 6f201b2f530722d46a2340c54aa0c786, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8593,7 +8592,7 @@ MonoBehaviour:
   zAxis:
     enabled: 1
     useLocal: 1
-    pivot: {fileID: 78905665988730568}
+    pivot: {fileID: 3013183312359038456}
     minAngle: -35
     maxAngle: 35
 --- !u!54 &3074017478964102590

@@ -393,7 +393,7 @@ public class PlayerInfo : NetworkBehaviour
 
     public override void Render()
     {
-        // if (HasInputAuthority || Device != DeviceType.VR) return;
+        if (HasInputAuthority || Device != DeviceType.VR) return;
 
         if (headAnchor != null)
             headAnchor.SetPositionAndRotation(HeadPosition, HeadRotation);
