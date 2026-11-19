@@ -57,15 +57,14 @@ public class MultiAxisRotateTransformer : MonoBehaviour, ITransformer
         previousGrabPosition = currentGrabPosition;
     }
 
+    
     private void ApplyAxis(AxisSettings settings, Vector3 axis, ref Vector3 previous, Vector3 current)
     {
         if (!settings.enabled) return;
 
         Transform target = grabbable.Transform;
-
         Vector3 pivotPosition = settings.pivot != null ? settings.pivot.position : target.position;
-
-        Vector3 rotationAxis = settings.useLocal ? target.rotation * axis : axis;
+        Vector3 rotationAxis = settings.useLocal ? target.TransformDirection(axis) : axis;
 
         Vector3 from = Vector3.ProjectOnPlane(previous - pivotPosition, rotationAxis);
         Vector3 to = Vector3.ProjectOnPlane(current - pivotPosition, rotationAxis);
@@ -77,16 +76,16 @@ public class MultiAxisRotateTransformer : MonoBehaviour, ITransformer
         float appliedAngle = newAngle - settings.angle;
 
         settings.angle = newAngle;
-
         if (Mathf.Abs(appliedAngle) < 0.00001f) return;
 
-        Quaternion deltaRotation = Quaternion.AngleAxis(appliedAngle, rotationAxis);
+        Quaternion rotation = Quaternion.AngleAxis(appliedAngle, rotationAxis);
 
-        target.position = pivotPosition + deltaRotation * (target.position - pivotPosition);
-        target.rotation = deltaRotation * target.rotation;
+        target.position = pivotPosition + rotation * (target.position - pivotPosition);
+        target.rotation = rotation * target.rotation;
 
-        previous = pivotPosition + deltaRotation * (previous - pivotPosition);
+        previous = pivotPosition + rotation * (previous - pivotPosition);
     }
+
 
     public void EndTransform()
     {
