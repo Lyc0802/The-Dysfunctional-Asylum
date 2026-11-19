@@ -24,16 +24,13 @@ public class MultiAxisRotateTransformer : MonoBehaviour, ITransformer
 
     private IGrabbable grabbable;
     private Vector3 previousGrabPosition;
-    private Vector3 initialPosition;
-    private Quaternion initialRotation;
+    private Quaternion initialLocalRotation;
     private bool isTransforming;
 
     public void Initialize(IGrabbable grabbable)
     {
         this.grabbable = grabbable;
-
-        initialPosition = grabbable.Transform.position;
-        initialRotation = grabbable.Transform.rotation;
+        initialLocalRotation = grabbable.Transform.localRotation;
 
         xAxis.angle = 0f;
         yAxis.angle = 0f;
@@ -52,61 +49,60 @@ public class MultiAxisRotateTransformer : MonoBehaviour, ITransformer
     {
         if (!isTransforming || grabbable.GrabPoints.Count == 0) return;
 
+        Transform target = grabbable.Transform;
         Vector3 currentGrabPosition = grabbable.GrabPoints[0].position;
-        Vector3 previous = previousGrabPosition;
+        Quaternion previousRotation = target.rotation;
+        Vector3 previousPosition = target.position;
 
-        ApplyAxis(yAxis, Vector3.up, ref previous, currentGrabPosition);
-        ApplyAxis(xAxis, Vector3.right, ref previous, currentGrabPosition);
-        ApplyAxis(zAxis, Vector3.forward, ref previous, currentGrabPosition);
+        UpdateAxisAngle(yAxis, Vector3.up, currentGrabPosition);
+        UpdateAxisAngle(xAxis, Vector3.right, currentGrabPosition);
+        UpdateAxisAngle(zAxis, Vector3.forward, currentGrabPosition);
+
+        Quaternion localRotation = initialLocalRotation;
+        if (yAxis.enabled) localRotation *= Quaternion.AngleAxis(yAxis.angle, Vector3.up);
+        if (xAxis.enabled) localRotation *= Quaternion.AngleAxis(xAxis.angle, Vector3.right);
+        if (zAxis.enabled) localRotation *= Quaternion.AngleAxis(zAxis.angle, Vector3.forward);
+
+        target.localRotation = localRotation;
+
+        ApplyPivotPosition(yAxis, Vector3.up, previousRotation, previousPosition);
+        ApplyPivotPosition(xAxis, Vector3.right, previousRotation, previousPosition);
+        ApplyPivotPosition(zAxis, Vector3.forward, previousRotation, previousPosition);
 
         previousGrabPosition = currentGrabPosition;
     }
 
-    private void ApplyAxis(AxisSettings settings, Vector3 axis, ref Vector3 previous, Vector3 current)
+    private void UpdateAxisAngle(AxisSettings settings, Vector3 axis, Vector3 currentGrabPosition)
     {
         if (!settings.enabled) return;
 
         Transform target = grabbable.Transform;
         Vector3 pivotPosition = settings.pivot != null ? settings.pivot.position : target.position;
-        Vector3 rotationAxis = settings.useLocal ? target.TransformDirection(axis) : axis;
+        Vector3 rotationAxis = target.TransformDirection(axis);
 
-        Vector3 from = Vector3.ProjectOnPlane(previous - pivotPosition, rotationAxis);
-        Vector3 to = Vector3.ProjectOnPlane(current - pivotPosition, rotationAxis);
+        Vector3 from = Vector3.ProjectOnPlane(previousGrabPosition - pivotPosition, rotationAxis);
+        Vector3 to = Vector3.ProjectOnPlane(currentGrabPosition - pivotPosition, rotationAxis);
 
         if (from.sqrMagnitude < 0.0004f || to.sqrMagnitude < 0.0004f) return;
 
         float deltaAngle = Vector3.SignedAngle(from, to, rotationAxis);
-        float newAngle = Mathf.Clamp(settings.angle + deltaAngle, settings.minAngle, settings.maxAngle);
-        float appliedAngle = newAngle - settings.angle;
+        settings.angle = Mathf.Clamp(settings.angle + deltaAngle, settings.minAngle, settings.maxAngle);
+    }
 
-        settings.angle = newAngle;
+    private void ApplyPivotPosition(AxisSettings settings, Vector3 axis, Quaternion previousRotation, Vector3 previousPosition)
+    {
+        if (!settings.enabled || settings.pivot == null) return;
 
-        if (Mathf.Abs(appliedAngle) < 0.0001f) return;
+        Transform target = grabbable.Transform;
+        Vector3 pivotPosition = settings.pivot.position;
+        Vector3 rotationAxis = previousRotation * axis;
 
-        Quaternion deltaRotation = Quaternion.AngleAxis(appliedAngle, rotationAxis);
-
-        target.position = pivotPosition + deltaRotation * (target.position - pivotPosition);
-        target.rotation = deltaRotation * target.rotation;
-
-        previous = pivotPosition + deltaRotation * (previous - pivotPosition);
+        Quaternion deltaRotation = target.rotation * Quaternion.Inverse(previousRotation);
+        target.position = pivotPosition + deltaRotation * (previousPosition - pivotPosition);
     }
 
     public void EndTransform()
     {
         isTransforming = false;
-    }
-
-    public void ResetRotation()
-    {
-        if (grabbable == null) return;
-
-        grabbable.Transform.SetPositionAndRotation(initialPosition, initialRotation);
-
-        xAxis.angle = 0f;
-        yAxis.angle = 0f;
-        zAxis.angle = 0f;
-
-        if (isTransforming && grabbable.GrabPoints.Count > 0)
-            previousGrabPosition = grabbable.GrabPoints[0].position;
     }
 }
