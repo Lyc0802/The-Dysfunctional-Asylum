@@ -2,10 +2,19 @@ using Fusion;
 using UnityEngine;
 using Bombanana.Interaction;
 
+public enum PCPlayerCharacter : byte
+{
+    Unknown = 0,
+    Commander = 1,
+    Glitch = 2,
+    Freddy = 3
+}
+
 public class PlayerInfo : NetworkBehaviour
 {
     [Networked] public string playerName { get; set; }
     [Networked, OnChangedRender(nameof(OnDeviceChanged))] public DeviceType Device { get; set; }
+
 
     private RunnerPeerSettings rps;
     private bool _modelSpawned;
@@ -15,9 +24,11 @@ public class PlayerInfo : NetworkBehaviour
     [SerializeField] private VehicleCharacterMotor characterMotor;
 
     [Header("PC Setting")]
+    [Networked] public PCPlayerCharacter character { get; set; }
     public GameObject prefabPC;
     public Commander commander;
-    [SerializeField] private float lookSensitivity = 0.15f;
+    public Glitch glitch;
+    public Freddy freddy;
 
     [Header("VR Setting")]
     public GameObject prefabVR;
@@ -76,6 +87,12 @@ public class PlayerInfo : NetworkBehaviour
         if (commander == null)
             commander = GetComponent<Commander>();
 
+        if (glitch == null)
+            glitch = GetComponent<Glitch>();
+
+        if (freddy == null)
+            freddy = GetComponent<Freddy>();
+
         if (wheelchair == null)
             wheelchair = GetComponent<Wheelchair>();
 
@@ -103,6 +120,10 @@ public class PlayerInfo : NetworkBehaviour
 
                 if (commander != null)
                     commander.cameraPivot = cameraObj.transform;
+                if (glitch != null)
+                    glitch.cameraPivot = cameraObj.transform;
+                if (freddy != null)
+                    freddy.cameraPivot = cameraObj.transform;
             }
             else if (rps.Device == DeviceType.VR)
             {
@@ -175,6 +196,16 @@ public class PlayerInfo : NetworkBehaviour
         }
     }
 
+    public void SetCharacter(PCPlayerCharacter character)
+    {
+        RPC_SetCharacter(character);
+    }
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    private void RPC_SetCharacter(PCPlayerCharacter character)
+    {
+        this.character = character;
+    }
+    
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     private void RPC_SetInitial(DeviceType device, string name)
     {
@@ -255,16 +286,35 @@ public class PlayerInfo : NetworkBehaviour
 
     private void UpdatePC(PlayerInputData input)
     {
-        if (commander == null) return;
-
-        commander.Drive(input.Move, Runner.DeltaTime);
-
-        if (HasInputAuthority && Runner.IsForward)
-            commander.Look(input.Look);
+        switch (character)
+        {
+            case PCPlayerCharacter.Commander:
+                if (commander == null) break;
+                commander.Drive(input.Move, Runner.DeltaTime);
+                if (HasInputAuthority && Runner.IsForward)
+                    commander.Look(input.Look);
+                break;
+            case PCPlayerCharacter.Glitch:
+                if (glitch == null) break;
+                glitch.Move(input.Move, Runner.DeltaTime);
+                if (HasInputAuthority && Runner.IsForward)
+                    glitch.Look(input.Look);
+                break;
+            case PCPlayerCharacter.Freddy:
+            case PCPlayerCharacter.Unknown:
+            default:
+                if (freddy == null) break;
+                freddy.Move(input.Move, Runner.DeltaTime);
+                if (HasInputAuthority && Runner.IsForward)
+                    freddy.Look(input.Look);
+                break;
+        }        
     }
 
     private void UpdateVR(PlayerInputData input)
     {
+        if (isUsingMonitor) return;
+
         if (HasStateAuthority)
         {
             HeadPosition = input.headPosition;
@@ -280,7 +330,6 @@ public class PlayerInfo : NetworkBehaviour
             HandlebarRotation = input.handlebarLocalRotation;
         }
 
-        if (isUsingMonitor) return;
 
         if (input.usingMotor)
         {

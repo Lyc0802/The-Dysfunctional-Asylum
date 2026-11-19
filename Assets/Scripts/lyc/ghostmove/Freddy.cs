@@ -88,7 +88,7 @@ public class Freddy : MonoBehaviour
     public void Move(Vector2 move, float dt)
     {
         // 參數名稱要和 Animator 視窗裡的一模一樣（大小寫也要相同）：move
-        animator.SetBool("move", move != Vector2.zero);
+        animator?.SetBool("move", move != Vector2.zero);
         Vector3 direction = transform.rotation * new Vector3(move.x, 0f, move.y);
         Vector3 velocity = Vector3.ClampMagnitude(direction, 1f) * moveSpeed;
 
@@ -105,7 +105,7 @@ public class Freddy : MonoBehaviour
         if (Time.time < nextAttackTime) return;
         nextAttackTime = Time.time + attackCooldown;
 
-        animator.SetTrigger("attack");
+        animator?.SetTrigger("attack");
         Vector3 center = AttackCenter();
         Collider[] hits = Physics.OverlapSphere(center, attackRadius, attackLayers, QueryTriggerInteraction.Ignore);
         foreach (var hit in hits)

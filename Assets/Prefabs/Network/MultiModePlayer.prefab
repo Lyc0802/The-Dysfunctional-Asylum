@@ -141,6 +141,8 @@ GameObject:
   - component: {fileID: -7816371721059583508}
   - component: {fileID: -2646353196525242035}
   - component: {fileID: -4593345138282915084}
+  - component: {fileID: 9201376461903754224}
+  - component: {fileID: 283200129540257090}
   - component: {fileID: 8945545431091548629}
   - component: {fileID: 3202132245643984494}
   - component: {fileID: 765866995975460161}
@@ -188,9 +190,11 @@ MonoBehaviour:
   _Device: 0
   networkCharacterController: {fileID: 3202132245643984494}
   characterMotor: {fileID: 765866995975460161}
+  _character: 0
   prefabPC: {fileID: 2865860596055117538, guid: 3b2245db90d911042832ec2d8317156f, type: 3}
   commander: {fileID: -4593345138282915084}
-  lookSensitivity: 0.15
+  glitch: {fileID: 9201376461903754224}
+  freddy: {fileID: 283200129540257090}
   prefabVR: {fileID: 4285688294624625951, guid: 84e145bf5001629419ecdeea4b8e2768, type: 3}
   VRRigPrefab: {fileID: 5416297768405025165, guid: 2ee0b4e58fd6fc64898845c5f1a702c6, type: 3}
   vrRig: {fileID: 0}
@@ -287,6 +291,50 @@ MonoBehaviour:
   forwardSpeed: 2.5
   backwardSpeed: 1.2
   turnSpeed: 90
+--- !u!114 &9201376461903754224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809dfe8bf25d1954a87a690ec35ea5b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Glitch
+  cameraPivot: {fileID: 0}
+  mouseSensitivity: 0.1
+  minPitch: -60
+  maxPitch: 60
+  moveSpeed: 3
+  bobAmplitude: 0.05
+  bobFrequency: 0.8
+--- !u!114 &283200129540257090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016506478830814873}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c0f3725b1cc32418c70e06a252e6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Freddy
+  cameraPivot: {fileID: 0}
+  mouseSensitivity: 0.1
+  minPitch: -60
+  maxPitch: 60
+  moveSpeed: 3
+  gravity: -20
+  attackRange: 1.5
+  attackRadius: 1
+  attackCooldown: 1
+  attackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  animator: {fileID: 0}
 --- !u!143 &8945545431091548629
 CharacterController:
   m_ObjectHideFlags: 0

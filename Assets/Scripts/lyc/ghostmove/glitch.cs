@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class glitch : MonoBehaviour
+public class Glitch : MonoBehaviour
 {
     [Header("視角（頭）")]
     public Transform cameraPivot;
