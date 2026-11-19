@@ -73,7 +73,7 @@ public class glitch : MonoBehaviour
         Vector3 direction = transform.rotation * new Vector3(move.x, 0f, move.y);
         Vector3 velocity = Vector3.ClampMagnitude(direction, 1f) * moveSpeed;
 
-        controller.Move(velocity * dt);   // Y 是 0，所以高度不會變
+        controller.Move(velocity * dt);   
     }
 
     void Hover()
